@@ -1,4 +1,4 @@
-const CACHE_NAME = 'scholara-cache-v1'
+const CACHE_NAME = 'zenith-cache-v1'
 
 self.addEventListener('install', (event) => {
   event.waitUntil(

@@ -26,7 +26,7 @@ export default function AIChat() {
     try {
       const res = await api.post('/ai/chat', {
         messages: newMessages,
-        context: 'Scholara study assistant',
+        context: 'Zenith study assistant',
       })
       setMessages((prev) => [...prev, { role: 'assistant', content: res.data.reply }])
     } catch {

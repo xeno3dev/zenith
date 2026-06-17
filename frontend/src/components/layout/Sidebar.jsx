@@ -47,7 +47,7 @@ export default function Sidebar() {
   return (
     <aside className="hidden md:flex fixed top-0 left-0 h-full w-64 bg-surface flex-col border-r border-white/5 z-20">
       <div className="px-6 py-6 border-b border-white/5">
-        <h1 className="text-2xl font-extrabold text-primary">Scholara</h1>
+        <h1 className="text-2xl font-extrabold text-primary">Zenith</h1>
         <p className="text-xs text-text/50 mt-1">by Xeno Solutions</p>
       </div>
 

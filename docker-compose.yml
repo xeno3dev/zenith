@@ -5,20 +5,20 @@ services:
     image: postgres:16-alpine
     restart: unless-stopped
     environment:
-      POSTGRES_USER: ${POSTGRES_USER:-scholara}
+      POSTGRES_USER: ${POSTGRES_USER:-zenith}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
-      POSTGRES_DB: ${POSTGRES_DB:-scholara}
+      POSTGRES_DB: ${POSTGRES_DB:-zenith}
     volumes:
-      - scholara_db_data:/var/lib/postgresql/data
+      - zenith_db_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-scholara}"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-zenith}"]
       interval: 5s
       timeout: 5s
       retries: 10
     networks:
-      - scholara-net
+      - zenith-net
 
   backend:
     build: ./backend
@@ -32,9 +32,9 @@ services:
     ports:
       - "5000:5000"
     volumes:
-      - scholara_audio:${AUDIO_STORAGE_PATH:-/app/audio}
+      - zenith_audio:${AUDIO_STORAGE_PATH:-/app/audio}
     networks:
-      - scholara-net
+      - zenith-net
 
   frontend:
     build: ./frontend
@@ -45,12 +45,12 @@ services:
     ports:
       - "3000:3000"
     networks:
-      - scholara-net
+      - zenith-net
 
 networks:
-  scholara-net:
+  zenith-net:
     driver: bridge
 
 volumes:
-  scholara_db_data:
-  scholara_audio:
+  zenith_db_data:
+  zenith_audio:

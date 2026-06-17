@@ -3,7 +3,7 @@ import useSubjects from '../hooks/useSubjects'
 import TimetableGrid from '../components/timetable/TimetableGrid'
 import SubjectPicker from '../components/timetable/SubjectPicker'
 
-const STORAGE_KEY = 'scholara_timetable'
+const STORAGE_KEY = 'zenith_timetable'
 const PERIODS = [1, 2, 3, 4, 5, 6, 7]
 
 export default function Timetable() {

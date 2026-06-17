@@ -1,5 +1,5 @@
 """
-Class-based configuration for Scholara backend.
+Class-based configuration for Zenith backend.
 
 Reads from environment variables (loaded via python-dotenv in app/__init__.py
 or by the shell/Docker environment in production).
@@ -22,7 +22,7 @@ class Config:
 
     # Database
     SQLALCHEMY_DATABASE_URI = os.environ.get(
-        "DATABASE_URL", "sqlite:///scholara.db"
+        "DATABASE_URL", "sqlite:///zenith.db"
     )
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ENGINE_OPTIONS = {"pool_pre_ping": True}

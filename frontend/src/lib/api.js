@@ -5,7 +5,7 @@ const api = axios.create({
 })
 
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('scholara_token')
+  const token = localStorage.getItem('zenith_token')
   if (token) {
     config.headers.Authorization = `Bearer ${token}`
   }
@@ -16,7 +16,7 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response && error.response.status === 401) {
-      localStorage.removeItem('scholara_token')
+      localStorage.removeItem('zenith_token')
       window.location.href = '/login'
     }
     return Promise.reject(error)

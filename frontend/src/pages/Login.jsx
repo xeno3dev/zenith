@@ -32,7 +32,7 @@ export default function Login() {
       <div className="w-full max-w-md bg-surface rounded-2xl p-8 shadow-xl">
         <div className="flex items-center gap-2 mb-6 justify-center">
           <Sparkles className="text-primary" size={28} />
-          <h1 className="text-2xl font-extrabold text-text">Scholara</h1>
+          <h1 className="text-2xl font-extrabold text-text">Zenith</h1>
         </div>
         <h2 className="text-lg font-semibold text-center mb-6 text-text/80">
           Log in to your account

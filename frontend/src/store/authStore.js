@@ -2,16 +2,16 @@ import { create } from 'zustand'
 
 const useAuthStore = create((set) => ({
   user: null,
-  token: localStorage.getItem('scholara_token'),
-  isAuthenticated: !!localStorage.getItem('scholara_token'),
+  token: localStorage.getItem('zenith_token'),
+  isAuthenticated: !!localStorage.getItem('zenith_token'),
 
   login: (userData, token) => {
-    localStorage.setItem('scholara_token', token)
+    localStorage.setItem('zenith_token', token)
     set({ user: userData, token, isAuthenticated: true })
   },
 
   logout: () => {
-    localStorage.removeItem('scholara_token')
+    localStorage.removeItem('zenith_token')
     set({ user: null, token: null, isAuthenticated: false })
   },
 

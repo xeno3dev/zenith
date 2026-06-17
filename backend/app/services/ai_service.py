@@ -1,5 +1,5 @@
 """
-AI service wrapping the Anthropic Claude API for Scholara's study features:
+AI service wrapping the Anthropic Claude API for Zenith's study features:
 podcast script generation, quiz generation, topic explanations, and general
 study-assistant chat.
 """
@@ -41,7 +41,7 @@ def generate_podcast_script(content: str, subject: str) -> list:
     Returns a list of {"speaker": "Ari"|"Sol", "text": str} dicts.
     """
     system_prompt = (
-        "You are a professional podcast script writer for Scholara, an AI study "
+        "You are a professional podcast script writer for Zenith, an AI study "
         "app for Caribbean (CSEC/CAPE) students. You write engaging, natural-sounding "
         "two-host educational podcast scripts in the style of NotebookLM's "
         "'Deep Dive' podcasts.\n\n"
@@ -118,7 +118,7 @@ def quiz_me(deck_id: int, user_id: str) -> dict:
     card_lines = "\n".join(f"- Front: {c.front} | Back: {c.back}" for c in cards)
 
     system_prompt = (
-        "You are Scholara's quiz generator for CSEC/CAPE students. Given a set of "
+        "You are Zenith's quiz generator for CSEC/CAPE students. Given a set of "
         "flashcards, you create NEW quiz questions that test the same underlying "
         "concepts in a different way — never just copy/paste the flashcard text "
         "verbatim as the question.\n\n"
@@ -161,7 +161,7 @@ def explain_topic(topic: str, subject: str, level: str) -> str:
     (e.g. "CSEC", "CAPE Unit 1", "beginner"). Returns plain text.
     """
     system_prompt = (
-        "You are Scholara's friendly study assistant for Caribbean students "
+        "You are Zenith's friendly study assistant for Caribbean students "
         "preparing for CSEC and CAPE examinations. Explain topics clearly, using "
         "simple language, concrete examples, and Caribbean-relevant context where "
         "it helps understanding. Avoid markdown formatting — write in plain "
@@ -193,7 +193,7 @@ def chat(messages: list, context: str) -> str:
     ground the assistant's responses.
     """
     system_prompt = (
-        "You are Scholara, a friendly, encouraging AI study assistant for Caribbean "
+        "You are Zenith, a friendly, encouraging AI study assistant for Caribbean "
         "(CSEC/CAPE) students. You help with homework questions, study strategies, "
         "exam prep, and general organization. You're warm but concise, and you draw "
         "on Caribbean-relevant examples when helpful. Avoid markdown formatting; "

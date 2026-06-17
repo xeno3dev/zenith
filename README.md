@@ -1,10 +1,10 @@
-# Scholara
+# Zenith
 
 **AI-powered student organizer for Caribbean CSEC/CAPE students.**
 
 Built by [Xeno Solutions](https://github.com/xeno3dev) as a [Hack Club Stardance](https://hackclub.com/) submission.
 
-Scholara is a study companion that understands the Caribbean classroom: CSEC/CAPE subjects, grading conventions, and exam culture. It bundles a timetable builder, assignment & exam trackers, a weighted-grade tracker with CSEC grade prediction, a spaced-repetition flashcard system, an AI study assistant, and a flagship feature — an AI-generated study **podcast** where two hosts, Ari and Sol, talk through your notes like a NotebookLM-style deep dive.
+Zenith is a study companion that understands the Caribbean classroom: CSEC/CAPE subjects, grading conventions, and exam culture. It bundles a timetable builder, assignment & exam trackers, a weighted-grade tracker with CSEC grade prediction, a spaced-repetition flashcard system, an AI study assistant, and a flagship feature — an AI-generated study **podcast** where two hosts, Ari and Sol, talk through your notes like a NotebookLM-style deep dive.
 
 See [`BLUEPRINT.md`](./BLUEPRINT.md) for the full project blueprint (features, architecture, database schema, API reference, SM-2 algorithm, CSEC/CAPE grading specifics, roadmap, and deployment notes).
 
@@ -30,7 +30,7 @@ docker compose up --build
 ## Project structure
 
 ```
-scholara/
+zenith/
 ├── backend/    # Flask API
 ├── frontend/   # Vite + React app
 ├── docker-compose.yml

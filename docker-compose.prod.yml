@@ -46,8 +46,8 @@ services:
     expose:
       - "8880"
     networks:
-      - scholara-net
+      - zenith-net
 
 networks:
-  scholara-net:
+  zenith-net:
     driver: bridge
