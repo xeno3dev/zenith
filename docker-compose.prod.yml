@@ -1,0 +1,53 @@
+## Production overrides for docker-compose.yml
+## Usage: docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
+
+version: "3.9"
+
+services:
+  db:
+    ports: []
+    restart: always
+
+  backend:
+    restart: always
+    environment:
+      FLASK_ENV: production
+    command:
+      [
+        "gunicorn",
+        "--bind",
+        "0.0.0.0:5000",
+        "--workers",
+        "4",
+        "--timeout",
+        "120",
+        "wsgi:app",
+      ]
+    ports: []
+    expose:
+      - "5000"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    restart: always
+    # Dockerfile builds the Vite app and serves the static bundle via nginx
+    # instead of the Vite dev server. nginx listens on port 80 inside the
+    # container; map it to 3000 on the host to match the dev compose file.
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+  kokoro:
+    image: ghcr.io/remsky/kokoro-fastapi-cpu:latest
+    restart: always
+    expose:
+      - "8880"
+    networks:
+      - scholara-net
+
+networks:
+  scholara-net:
+    driver: bridge

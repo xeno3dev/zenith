@@ -1,0 +1,56 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-scholara}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+      POSTGRES_DB: ${POSTGRES_DB:-scholara}
+    volumes:
+      - scholara_db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-scholara}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - scholara-net
+
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      FLASK_ENV: ${FLASK_ENV:-development}
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "5000:5000"
+    volumes:
+      - scholara_audio:${AUDIO_STORAGE_PATH:-/app/audio}
+    networks:
+      - scholara-net
+
+  frontend:
+    build: ./frontend
+    restart: unless-stopped
+    env_file: .env
+    depends_on:
+      - backend
+    ports:
+      - "3000:3000"
+    networks:
+      - scholara-net
+
+networks:
+  scholara-net:
+    driver: bridge
+
+volumes:
+  scholara_db_data:
+  scholara_audio:
