@@ -1,24 +1,24 @@
-# Scholara — Project Blueprint
+# Zenith — Project Blueprint
 
 ## 1. Project Overview
 
-**Name:** Scholara
+**Name:** Zenith
 **Tagline:** *The study companion that actually gets the Caribbean classroom.*
 **Built by:** Xeno Solutions, for the Hack Club Stardance program.
 
 **The problem.** Caribbean secondary and sixth-form students sitting CSEC and CAPE examinations are underserved by the dominant productivity and study tools on the market. Notion is a blank canvas that demands hours of template-building before it's useful. Google Classroom is built around a single teacher pushing assignments to a single class, not around a student juggling eight CSEC subjects across multiple teachers, School-Based Assessments (SBAs), mocks, and CXC-set externals. Neither tool knows what "Form 5," "POA," "Integrated Science," or "a Grade 1" means. Neither understands that a CSEC grading scale runs 1 (best) to 6 (worst), inverted from the A–F intuition baked into most western EdTech.
 
-**The purpose.** Scholara is a single, opinionated app built specifically for CSEC/CAPE students: a timetable that speaks in "periods" and CSEC subjects out of the box, an assignment and exam tracker that understands SBA deadlines and mock exam season, a grade tracker that predicts your CXC grade from a weighted average, a spaced-repetition flashcard system for the memorization-heavy parts of the syllabus (history dates, biology terms, French vocabulary), an AI study assistant that can explain a CAPE Unit 2 topic at the right level, and — the flagship feature — an AI-generated audio podcast that turns a wall of notes into a 10-minute conversation between two hosts you can listen to on the route to school.
+**The purpose.** Zenith is a single, opinionated app built specifically for CSEC/CAPE students: a timetable that speaks in "periods" and CSEC subjects out of the box, an assignment and exam tracker that understands SBA deadlines and mock exam season, a grade tracker that predicts your CXC grade from a weighted average, a spaced-repetition flashcard system for the memorization-heavy parts of the syllabus (history dates, biology terms, French vocabulary), an AI study assistant that can explain a CAPE Unit 2 topic at the right level, and — the flagship feature — an AI-generated audio podcast that turns a wall of notes into a 10-minute conversation between two hosts you can listen to on the route to school.
 
 ## 2. Stardance Submission Rationale
 
-Scholara is a fit for Hack Club Stardance on every axis the program cares about:
+Zenith is a fit for Hack Club Stardance on every axis the program cares about:
 
-- **Built by a student, for students.** Scholara was designed and built by a student who lives the CSEC/CAPE experience, not a company guessing at it from the outside.
-- **Claude API is structural, not decorative.** The Anthropic Claude API isn't a chatbot bolted onto the side — it is the engine behind two of Scholara's core features: the AI study assistant (chat / explain / quiz-me) and the podcast generator, which depends on Claude to write a structured, natural-sounding two-host script that is then handed to a TTS pipeline. Remove Claude and the flagship feature doesn't exist.
-- **Addresses a real, underserved demographic.** CSEC/CAPE students are a market every major EdTech company has ignored. Scholara's data model, grading logic, and subject presets are written around the actual CXC syllabus structure and grading scale, not retrofitted from a US/UK model.
+- **Built by a student, for students.** Zenith was designed and built by a student who lives the CSEC/CAPE experience, not a company guessing at it from the outside.
+- **Claude API is structural, not decorative.** The Anthropic Claude API isn't a chatbot bolted onto the side — it is the engine behind two of Zenith's core features: the AI study assistant (chat / explain / quiz-me) and the podcast generator, which depends on Claude to write a structured, natural-sounding two-host script that is then handed to a TTS pipeline. Remove Claude and the flagship feature doesn't exist.
+- **Addresses a real, underserved demographic.** CSEC/CAPE students are a market every major EdTech company has ignored. Zenith's data model, grading logic, and subject presets are written around the actual CXC syllabus structure and grading scale, not retrofitted from a US/UK model.
 - **Open source.** The full source is public on GitHub, with a clear README, environment variable documentation, and Docker Compose quick start so any student (or any other Hack Clubber) can self-host it.
-- **Aligned with Hack Club's mission.** Hack Club exists to get young people building real things instead of consuming. Scholara is exactly that: a young builder shipping a tool to solve their own problem, then opening it up for their entire region to use.
+- **Aligned with Hack Club's mission.** Hack Club exists to get young people building real things instead of consuming. Zenith is exactly that: a young builder shipping a tool to solve their own problem, then opening it up for their entire region to use.
 
 ## 3. Features
 
@@ -32,7 +32,7 @@ Every assignment belongs to a subject and carries a due date, a priority flag (1
 A dedicated view for everything exam-shaped: CSEC/CAPE externals, school internals, and mock exams. Each exam is tagged by type (internal/external/mock) and subject, with a countdown timer to exam day. An "upcoming" filter surfaces everything in the next 30 days — the window where exam anxiety (and the need to actually plan revision) spikes. Per-subject exam history lets a student see how a subject's assessment pattern has looked over the term.
 
 ### Grade Tracker
-Grades are logged per subject with a score, a max score, and a weight (so a 40%-weighted SBA and a 10%-weighted classwork count appropriately toward the running average). Scholara computes a weighted average per subject and — critically — maps that percentage onto the CXC 1–6 grading scale, the scale CSEC/CAPE students actually think in. A summary view shows every subject's predicted grade as a color-coded badge (green for a strong 1/2, yellow for a middling 3/4, red for a 5/6 that needs attention), plus simple bar-chart visualizations of where a student stands across all subjects.
+Grades are logged per subject with a score, a max score, and a weight (so a 40%-weighted SBA and a 10%-weighted classwork count appropriately toward the running average). Zenith computes a weighted average per subject and — critically — maps that percentage onto the CXC 1–6 grading scale, the scale CSEC/CAPE students actually think in. A summary view shows every subject's predicted grade as a color-coded badge (green for a strong 1/2, yellow for a middling 3/4, red for a 5/6 that needs attention), plus simple bar-chart visualizations of where a student stands across all subjects.
 
 ### Flashcard System (SRS)
 Students build decks of front/back flashcards, optionally tied to a subject. Review sessions use the SM-2 spaced repetition algorithm (see Section 8) to schedule when each card comes back, so time is spent on the cards that are about to be forgotten rather than re-reviewing everything indiscriminately. A due-today queue surfaces exactly the cards that need attention right now. Decks can be bootstrapped from a CSV import in the same front/back format Anki uses, so a student migrating from Anki (or a senior handing down a deck of CSEC History dates) doesn't have to retype anything.
@@ -54,7 +54,7 @@ Turns study material into an audio conversation between two AI hosts. Full techn
 This is the centerpiece of the Stardance submission — the feature where Claude's output becomes something a student actually *listens to*.
 
 ### What it does
-A student provides study material — pasted notes, a flashcard deck, or (eventually) a PDF — and Scholara produces a NotebookLM-style audio episode: a natural, engaging conversation between two AI hosts walking through that material. The result is something a student can put on while commuting, doing chores, or just resting their eyes after a day of reading.
+A student provides study material — pasted notes, a flashcard deck, or (eventually) a PDF — and Zenith produces a NotebookLM-style audio episode: a natural, engaging conversation between two AI hosts walking through that material. The result is something a student can put on while commuting, doing chores, or just resting their eyes after a day of reading.
 
 ### The hosts
 - **Ari** — the explainer. Analytical and clear, breaks complex ideas into structured pieces, sets context before diving in. Voice: deeper, measured (Kokoro voice `am_adam`).
@@ -246,7 +246,7 @@ All routes below are prefixed `/api` and, except where noted, require a JWT bear
 
 ## 8. Spaced Repetition Algorithm (SM-2)
 
-Scholara's flashcard reviews are scheduled using **SM-2**, the algorithm originally published for SuperMemo and later adopted (with tweaks) by Anki. Implemented in `srs_service.py`.
+Zenith's flashcard reviews are scheduled using **SM-2**, the algorithm originally published for SuperMemo and later adopted (with tweaks) by Anki. Implemented in `srs_service.py`.
 
 **Quality scores (0–5)**, mapped to the review buttons:
 - 0 = **Again** (complete failure to recall)
@@ -269,18 +269,18 @@ Scholara's flashcard reviews are scheduled using **SM-2**, the algorithm origina
    clamped to a floor of `1.3` (an ease factor below that makes intervals shrink too aggressively and the card never escapes a short review cycle).
 4. `next_review` is set to `now + interval days`.
 
-**Why SM-2, not FSRS.** Anki has since moved to FSRS (Free Spaced Repetition Scheduler), a more statistically sophisticated model that fits a per-user forgetting curve from review history. SM-2 was chosen for Scholara deliberately:
+**Why SM-2, not FSRS.** Anki has since moved to FSRS (Free Spaced Repetition Scheduler), a more statistically sophisticated model that fits a per-user forgetting curve from review history. SM-2 was chosen for Zenith deliberately:
 - It's simple enough to implement correctly in an afternoon and to reason about when something looks wrong — important for a hackathon timeline and for a codebase other students will read.
 - It needs no historical data to "warm up" — a brand-new deck behaves sensibly from card one, whereas FSRS needs a meaningful review history to fit well.
 - CSEC/CAPE study timescales (weeks to a few months until an exam) are short enough that SM-2's slightly less optimal long-tail scheduling doesn't matter — the difference between SM-2 and FSRS shows up over months-to-years of reviews, not one exam season.
 
 ## 9. CSEC/CAPE Specifics
 
-**CSEC (Caribbean Secondary Education Certificate)** is administered by CXC (the Caribbean Examinations Council) and graded on a 1–6 scale, where **1–3 is a pass** and **4–6 is a fail** — the inverse of the letter-grade intuition most non-Caribbean tools assume. Standard CSEC subjects Scholara ships as presets: English A, English B, Mathematics, Human & Social Biology, Agricultural Science, History, Geography, Principles of Business (POB), Principles of Accounts (POA), Spanish, French, Computer Studies, Integrated Science, Physics, Chemistry, Biology, Physical Education, Art, Music, Technical Drawing, and Food & Nutrition.
+**CSEC (Caribbean Secondary Education Certificate)** is administered by CXC (the Caribbean Examinations Council) and graded on a 1–6 scale, where **1–3 is a pass** and **4–6 is a fail** — the inverse of the letter-grade intuition most non-Caribbean tools assume. Standard CSEC subjects Zenith ships as presets: English A, English B, Mathematics, Human & Social Biology, Agricultural Science, History, Geography, Principles of Business (POB), Principles of Accounts (POA), Spanish, French, Computer Studies, Integrated Science, Physics, Chemistry, Biology, Physical Education, Art, Music, Technical Drawing, and Food & Nutrition.
 
 **CAPE (Caribbean Advanced Proficiency Examination)** is the advanced-level counterpart, split into Unit 1 and Unit 2 per subject, also graded 1–6.
 
-**Grade predictor formula.** Scholara maps a subject's weighted average percentage onto the CXC scale:
+**Grade predictor formula.** Zenith maps a subject's weighted average percentage onto the CXC scale:
 
 | Weighted average | CXC grade |
 |---|---|
@@ -305,14 +305,14 @@ Scholara's flashcard reviews are scheduled using **SM-2**, the algorithm origina
 
 ## 11. Deployment
 
-Scholara deploys as a Docker Compose stack via **Coolify**, running on the same Proxmox/Contabo VPS infrastructure as Xeno Solutions' other products (Keylo, The Spot). Coolify runs in an LXC container (`10.10.10.10`) behind an `nginx-ui` reverse proxy (`10.10.10.2`). The domain `scholara.app` is registered through Spaceship and points at the Contabo VPS IP. Coolify handles TLS termination and zero-downtime deploys triggered by a GitHub webhook on push to `main`. The Kokoro TTS service runs as a separate container on the same Docker network so the backend can reach it over the internal bridge network without exposing it publicly. Generated audio files are served either directly through Flask (`GET /podcasts/:id/audio`) or, in production, via nginx as a static asset path for lower overhead.
+Zenith deploys as a Docker Compose stack via **Coolify**, running on the same Proxmox/Contabo VPS infrastructure as Xeno Solutions' other products (Keylo, The Spot). Coolify runs in an LXC container (`10.10.10.10`) behind an `nginx-ui` reverse proxy (`10.10.10.2`). The domain `zenith.app` is registered through Spaceship and points at the Contabo VPS IP. Coolify handles TLS termination and zero-downtime deploys triggered by a GitHub webhook on push to `main`. The Kokoro TTS service runs as a separate container on the same Docker network so the backend can reach it over the internal bridge network without exposing it publicly. Generated audio files are served either directly through Flask (`GET /podcasts/:id/audio`) or, in production, via nginx as a static asset path for lower overhead.
 
 ## 12. Stardance Submission Checklist
 
-- [ ] GitHub repo public (`xeno3dev/scholara`)
+- [ ] GitHub repo public (`xeno3dev/zenith`)
 - [ ] README with screenshots, demo link, tech stack
 - [ ] Claude API integrated (AI assistant + podcast generation)
-- [ ] Live demo deployed at scholara.app
+- [ ] Live demo deployed at zenith.app
 - [ ] Demo video (3–5 min walkthrough, showing podcast generation end-to-end)
 - [ ] Stardance submission form filled out
 - [ ] Hack Club Slack post in #stardance
