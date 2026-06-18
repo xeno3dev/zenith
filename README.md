@@ -1,6 +1,6 @@
 # Zenith
 
-**(Patially) AI-powered student organizer.**
+**(Partially) AI-powered student organizer.**
 
 Built by [Xeno Solutions](https://github.com/xeno3dev) as a [Hack Club Stardance](https://stardance.hackclub.com/) submission.
 
@@ -45,4 +45,5 @@ See [`.env.example`](./.env.example) for the full list (database, JWT secret, An
 
 ## License
 
-MIT — built for the Hack Club Stardance program.
+[PolyForm Noncommercial 1.0](./LICENSE) with an additional grant for internal educational and institutional use. See [LICENSE](./LICENSE) for details.
+
