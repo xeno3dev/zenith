@@ -41,6 +41,18 @@ def create_app(config_name="development"):
     app.register_blueprint(ai_bp, url_prefix="/api/ai")
     app.register_blueprint(podcasts_bp, url_prefix="/api")
 
+    @app.errorhandler(400)
+    def bad_request_error(error):
+        return jsonify({"error": getattr(error, 'description', 'Bad request')}), 400
+
+    @app.errorhandler(401)
+    def unauthorized_error(error):
+        return jsonify({"error": getattr(error, 'description', 'Unauthorized')}), 401
+
+    @app.errorhandler(422)
+    def unprocessable_entity_error(error):
+        return jsonify({"error": getattr(error, 'description', 'Invalid request')}), 422
+
     @app.route("/health", methods=["GET"])
     def health():
         db_status = "ok"
