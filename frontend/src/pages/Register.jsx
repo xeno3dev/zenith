@@ -30,7 +30,7 @@ export default function Register() {
       toast.success('Account created! Welcome to Zenith.')
       navigate('/')
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Registration failed.')
+      toast.error(err.response?.data?.error || 'Registration failed.')
     } finally {
       setLoading(false)
     }
@@ -78,7 +78,7 @@ export default function Register() {
               type="password"
               name="password"
               required
-              minLength={6}
+              minLength={8}
               value={form.password}
               onChange={handleChange}
               className="w-full px-4 py-2 rounded-lg bg-background border border-white/10 text-text focus:outline-none focus:ring-2 focus:ring-primary"

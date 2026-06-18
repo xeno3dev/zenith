@@ -21,7 +21,7 @@ export default function Login() {
       toast.success('Welcome back!')
       navigate('/')
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Login failed. Check your credentials.')
+      toast.error(err.response?.data?.error || 'Login failed. Check your credentials.')
     } finally {
       setLoading(false)
     }
