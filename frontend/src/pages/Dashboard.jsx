@@ -148,7 +148,7 @@ export default function Dashboard() {
       <div className="flex flex-wrap gap-3">
         <Link
           to="/assignments"
-          className="px-4 py-2 rounded-lg bg-primary text-white text-sm font-medium hover:opacity-90"
+          className="px-4 py-2 rounded-lg bg-primary text-background text-sm font-medium hover:opacity-90"
         >
           Add Assignment
         </Link>

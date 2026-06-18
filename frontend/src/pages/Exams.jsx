@@ -66,7 +66,7 @@ export default function Exams() {
         </div>
         <button
           onClick={() => setShowForm((s) => !s)}
-          className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-white text-sm font-medium hover:opacity-90"
+          className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-background text-sm font-medium hover:opacity-90"
         >
           {showForm ? <X size={16} /> : <Plus size={16} />}
           {showForm ? 'Cancel' : 'New Exam'}
@@ -138,7 +138,7 @@ export default function Exams() {
         onClick={() => setUpcomingOnly((u) => !u)}
         className={cn(
           'px-3 py-1.5 rounded-full text-xs font-medium transition-colors',
-          upcomingOnly ? 'bg-primary text-white' : 'bg-surface text-text/60 hover:bg-white/10'
+          upcomingOnly ? 'bg-primary text-background' : 'bg-surface text-text/60 hover:bg-white/10'
         )}
       >
         {upcomingOnly ? 'Showing upcoming only' : 'Showing all exams'}

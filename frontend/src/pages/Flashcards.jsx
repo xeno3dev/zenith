@@ -89,7 +89,7 @@ export default function Flashcards() {
         </div>
         <button
           onClick={() => setShowNewDeck((s) => !s)}
-          className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-white text-sm font-medium hover:opacity-90"
+          className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-background text-sm font-medium hover:opacity-90"
         >
           <Plus size={16} />
           New Deck

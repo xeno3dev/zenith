@@ -65,7 +65,7 @@ function ExplainTab() {
         <button
           type="submit"
           disabled={loading}
-          className="px-4 py-2 rounded-lg bg-primary text-white text-sm font-medium hover:opacity-90 disabled:opacity-50"
+          className="px-4 py-2 rounded-lg bg-primary text-background text-sm font-medium hover:opacity-90 disabled:opacity-50"
         >
           {loading ? 'Explaining...' : 'Explain Topic'}
         </button>
@@ -107,7 +107,7 @@ export default function AIAssistant() {
             onClick={() => setTab(t.id)}
             className={cn(
               'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
-              tab === t.id ? 'bg-primary text-white' : 'bg-surface text-text/60 hover:bg-white/10'
+              tab === t.id ? 'bg-primary text-background' : 'bg-surface text-text/60 hover:bg-white/10'
             )}
           >
             {t.label}

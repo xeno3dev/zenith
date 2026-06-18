@@ -91,7 +91,7 @@ export default function Assignments() {
         </div>
         <button
           onClick={() => setShowForm((s) => !s)}
-          className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-white text-sm font-medium hover:opacity-90"
+          className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-background text-sm font-medium hover:opacity-90"
         >
           {showForm ? <X size={16} /> : <Plus size={16} />}
           {showForm ? 'Cancel' : 'New Assignment'}
@@ -176,7 +176,7 @@ export default function Assignments() {
             onClick={() => setFilter(f)}
             className={cn(
               'px-3 py-1.5 rounded-full text-xs font-medium transition-colors',
-              filter === f ? 'bg-primary text-white' : 'bg-surface text-text/60 hover:bg-white/10'
+              filter === f ? 'bg-primary text-background' : 'bg-surface text-text/60 hover:bg-white/10'
             )}
           >
             {f.replace('_', ' ')}

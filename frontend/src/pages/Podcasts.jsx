@@ -62,7 +62,7 @@ export default function Podcasts() {
             setShowGenerator((s) => !s)
             setSelectedPodcast(null)
           }}
-          className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-white text-sm font-medium hover:opacity-90"
+          className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-background text-sm font-medium hover:opacity-90"
         >
           {showGenerator ? <X size={16} /> : <Plus size={16} />}
           {showGenerator ? 'Cancel' : 'New Episode'}
