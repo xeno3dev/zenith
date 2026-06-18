@@ -20,3 +20,17 @@ dist/
 # Misc
 .DS_Store
 *.log
+
+# Playwright (root-level, in case init is accidentally run from project root)
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/
+
+# Playwright (frontend/)
+frontend/test-results/
+frontend/playwright-report/
+frontend/blob-report/
+frontend/playwright/.cache/
+frontend/playwright/.auth/

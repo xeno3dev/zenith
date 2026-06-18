@@ -74,3 +74,11 @@ jobs:
           name: playwright-report
           path: frontend/playwright-report/
           retention-days: 7
+
+      - name: Upload visual diff on failure
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: visual-diff
+          path: frontend/test-results/
+          retention-days: 7

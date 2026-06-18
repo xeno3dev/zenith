@@ -6,8 +6,8 @@
 @custom-variant dark (&:is(.dark *));
 
 body {
-  background-color: #0F0F1A;
-  color: #E2E8F0;
+  background-color: #0D0B1F;
+  color: #FFFFFF;
   font-family: 'Inter', sans-serif;
 }
 
@@ -21,16 +21,16 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #1A1A2E;
+  background: #161228;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #6C63FF;
+  background: #FFD93D;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #FF6B6B;
+  background: #f5c800;
 }
 
 @theme inline {
@@ -158,22 +158,22 @@ body {
 }
 
 :root {
-  --background: #0F0F1A;
-  --foreground: #E2E8F0;
-  --card: #1A1A2E;
-  --card-foreground: #E2E8F0;
-  --popover: #1A1A2E;
-  --popover-foreground: #E2E8F0;
-  --primary: #6C63FF;
-  --primary-foreground: #ffffff;
-  --secondary: #1A1A2E;
-  --secondary-foreground: #E2E8F0;
-  --muted: #1A1A2E;
-  --muted-foreground: rgba(226,232,240,0.6);
-  --accent: #FF6B6B;
-  --accent-foreground: #ffffff;
+  --background: #0D0B1F;
+  --foreground: #FFFFFF;
+  --card: #161228;
+  --card-foreground: #FFFFFF;
+  --popover: #161228;
+  --popover-foreground: #FFFFFF;
+  --primary: #FFD93D;
+  --primary-foreground: #0D0B1F;
+  --secondary: #161228;
+  --secondary-foreground: #FFFFFF;
+  --muted: #161228;
+  --muted-foreground: rgba(255,255,255,0.5);
+  --accent: #FFD93D;
+  --accent-foreground: #0D0B1F;
   --destructive: #ef4444;
-  --border: rgba(255,255,255,0.05);
-  --input: #1A1A2E;
-  --ring: #6C63FF;
+  --border: rgba(255,255,255,0.07);
+  --input: #161228;
+  --ring: #FFD93D;
 }
