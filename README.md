@@ -1,6 +1,6 @@
 # Zenith
 
-**AI-powered student organizer for Caribbean CSEC/CAPE students.**
+**(Patially) AI-powered student organizer for Caribbean CSEC/CAPE students.**
 
 Built by [Xeno Solutions](https://github.com/xeno3dev) as a [Hack Club Stardance](https://hackclub.com/) submission.
 
