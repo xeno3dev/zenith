@@ -28,8 +28,8 @@ def create_app(config_name="development"):
     from app.routes.exams import exams_bp
     from app.routes.flashcards import flashcards_bp
     from app.routes.grades import grades_bp
-    from app.routes.ai import ai_bp
-    from app.routes.podcasts import podcasts_bp
+    # from app.routes.ai import ai_bp  # Phase 3
+    # from app.routes.podcasts import podcasts_bp  # Phase 4
 
     app.register_blueprint(auth_bp, url_prefix="/api/auth")
     app.register_blueprint(subjects_bp, url_prefix="/api")
@@ -38,8 +38,8 @@ def create_app(config_name="development"):
     # flashcards_bp defines full paths for both /decks and /cards resources
     app.register_blueprint(flashcards_bp, url_prefix="/api")
     app.register_blueprint(grades_bp, url_prefix="/api")
-    app.register_blueprint(ai_bp, url_prefix="/api/ai")
-    app.register_blueprint(podcasts_bp, url_prefix="/api")
+    # app.register_blueprint(ai_bp, url_prefix="/api/ai")  # Phase 3
+    # app.register_blueprint(podcasts_bp, url_prefix="/api")  # Phase 4
 
     @app.errorhandler(400)
     def bad_request_error(error):
