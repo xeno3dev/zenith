@@ -12,6 +12,7 @@ const titles = {
   '/grades': 'Grades',
   '/podcasts': 'Podcasts',
   '/ai': 'AI Assistant',
+  '/subjects': 'Subjects'
 }
 
 function getInitials(name) {

@@ -1,6 +1,9 @@
 import { X } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 
 export default function SubjectPicker({ subjects, onSelect, onClose }) {
+  const navigate = useNavigate()
+  
   return (
     <div className="fixed inset-0 z-30 flex items-center justify-center bg-black/50 px-4">
       <div className="bg-surface rounded-xl p-4 w-full max-w-sm max-h-[70vh] overflow-y-auto shadow-2xl">
@@ -13,7 +16,14 @@ export default function SubjectPicker({ subjects, onSelect, onClose }) {
 
         <ul className="space-y-1">
           {subjects.length === 0 && (
-            <li className="text-sm text-text/50 py-2">No subjects yet. Add some first.</li>
+            <li className="py-2">
+              <button
+                onClick={() => { onClose(); navigate('/subjects') }}
+                className="text-sm text-accent hover:underline"
+              >
+                No subjects yet — add one
+              </button>
+            </li>
           )}
           {subjects.map((subject) => (
             <li key={subject.id}>

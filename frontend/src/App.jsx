@@ -14,6 +14,7 @@ import Podcasts from './pages/Podcasts'
 import AIAssistant from './pages/AIAssistant'
 import Login from './pages/Login'
 import Register from './pages/Register'
+import Subjects from './pages/Subjects'
 
 function ProtectedLayout() {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated)
@@ -51,6 +52,7 @@ export default function App() {
         <Route path="/grades" element={<Grades />} />
         <Route path="/podcasts" element={<Podcasts />} />
         <Route path="/ai" element={<AIAssistant />} />
+        <Route path="/subjects" element={<Subjects />} />
       </Route>
 
       <Route path="*" element={<Navigate to="/" replace />} />

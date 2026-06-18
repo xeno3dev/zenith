@@ -25,5 +25,18 @@ export default function useSubjects() {
     })
   }, [])
 
-  return { subjects, loading, createSubject, fetchSubjects }
+  const updateSubject = useCallback((id, data) => {
+    return api.put(`/subjects/${id}`, data).then((res) => {
+      setSubjects((prev) => prev.map((subject) => (subject.id === id ? res.data : subject)))
+      return res.data
+    })
+  }, [])
+
+  const deleteSubject = useCallback((id) => {
+    return api.delete(`/subjects/${id}`).then(() => {
+      setSubjects((prev) => prev.filter((subject) => subject.id !== id))
+    })
+  }, [])
+
+  return { subjects, loading, fetchSubjects, createSubject, updateSubject, deleteSubject }
 }

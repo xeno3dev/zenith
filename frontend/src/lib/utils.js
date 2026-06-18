@@ -1,3 +1,10 @@
+import { clsx } from "clsx";
+import { twMerge } from "tailwind-merge"
+
+export function cn(...inputs) {
+  return twMerge(clsx(inputs));
+}
+
 export function formatDate(date) {
   if (!date) return ''
   const d = typeof date === 'string' ? new Date(date) : date
@@ -18,10 +25,6 @@ export function daysUntil(date) {
   const startOfTarget = new Date(target.getFullYear(), target.getMonth(), target.getDate())
   const diffMs = startOfTarget.getTime() - startOfToday.getTime()
   return Math.round(diffMs / (1000 * 60 * 60 * 24))
-}
-
-export function cn(...classes) {
-  return classes.filter(Boolean).join(' ')
 }
 
 export function gradeColor(grade) {

@@ -1,3 +1,5 @@
+import re
+
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import (
     create_access_token,
@@ -12,6 +14,9 @@ from app.utils.auth import get_current_user
 
 auth_bp = Blueprint("auth", __name__)
 
+EMAIL_RE = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
+MIN_PASSWORD_LENGTH = 8
+
 
 @auth_bp.route("/register", methods=["POST"])
 def register():
@@ -22,6 +27,17 @@ def register():
 
     if not email or not password or not name:
         return jsonify({"error": "email, password, and name are required"}), 400
+
+    if not EMAIL_RE.match(email):
+        return jsonify({"error": "Invalid email format"}), 400
+
+    if len(password) < MIN_PASSWORD_LENGTH:
+        return (
+            jsonify(
+                {"error": f"Password must be at least {MIN_PASSWORD_LENGTH} characters"}
+            ),
+            400,
+        )
 
     if User.query.filter_by(email=email).first() is not None:
         return jsonify({"error": "An account with this email already exists"}), 409

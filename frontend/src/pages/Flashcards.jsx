@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react'
 import { ArrowLeft, Plus } from 'lucide-react'
-import toast from 'react-hot-toast'
+import { toast } from 'sonner'
 import api from '../lib/api'
 import useFlashcards from '../hooks/useFlashcards'
 import useSubjects from '../hooks/useSubjects'

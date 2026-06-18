@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import toast from 'react-hot-toast'
+import { toast } from 'sonner'
 import { Upload } from 'lucide-react'
 import api from '../../lib/api'
 

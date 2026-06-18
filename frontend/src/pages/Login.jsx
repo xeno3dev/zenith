@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import toast from 'react-hot-toast'
+import { toast } from 'sonner'
 import { Sparkles } from 'lucide-react'
 import api from '../lib/api'
 import useAuthStore from '../store/authStore'

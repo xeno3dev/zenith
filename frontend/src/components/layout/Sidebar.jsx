@@ -8,6 +8,7 @@ import {
   BarChart3,
   Mic,
   Sparkles,
+  BookOpen,
   LogOut,
 } from 'lucide-react'
 import useAuthStore from '../../store/authStore'
@@ -22,6 +23,7 @@ const links = [
   { to: '/grades', label: 'Grades', icon: BarChart3 },
   { to: '/podcasts', label: 'Podcasts', icon: Mic },
   { to: '/ai', label: 'AI Assistant', icon: Sparkles },
+  { to: '/subjects', label: 'Subjects', icon: BookOpen },
 ]
 
 function getInitials(name) {

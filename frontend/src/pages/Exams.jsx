@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import toast from 'react-hot-toast'
+import { toast } from 'sonner'
 import { Plus, X } from 'lucide-react'
 import api from '../lib/api'
 import useSubjects from '../hooks/useSubjects'
