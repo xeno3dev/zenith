@@ -33,8 +33,8 @@ def create_exam():
     user_id = get_jwt_identity()
     data = request.get_json(silent=True) or {}
 
-    if not data.get("title") or not data.get("subject_id") or not data.get("exam_date"):
-        return jsonify({"error": "title, subject_id, and exam_date are required"}), 400
+    if not data.get("title") or not data.get("exam_date"):
+        return jsonify({"error": "title and exam_date are required"}), 400
 
     try:
         exam_date = parse_iso_date(data["exam_date"])
@@ -43,7 +43,7 @@ def create_exam():
 
     exam = Exam(
         user_id=user_id,
-        subject_id=data["subject_id"],
+        subject_id=data.get("subject_id"),
         title=data["title"],
         exam_date=exam_date,
         exam_type=data.get("exam_type", "internal"),
