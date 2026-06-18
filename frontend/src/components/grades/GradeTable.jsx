@@ -1,4 +1,4 @@
-import { csecGradeColor, cn } from '../../lib/utils'
+import { gradeColor, cn } from '../../lib/utils'
 
 export default function GradeTable({ summary }) {
   if (summary.length === 0) {
@@ -16,7 +16,7 @@ export default function GradeTable({ summary }) {
           <tr className="border-b border-white/10 text-text/60 text-left">
             <th className="px-4 py-3">Subject</th>
             <th className="px-4 py-3">Average</th>
-            <th className="px-4 py-3">CSEC Grade</th>
+            <th className="px-4 py-3">Grade</th>
           </tr>
         </thead>
         <tbody>
@@ -28,10 +28,10 @@ export default function GradeTable({ summary }) {
                 <span
                   className={cn(
                     'px-2 py-0.5 rounded-full text-xs font-semibold',
-                    csecGradeColor(row.csec_grade)
+                    gradeColor(row.predicted_grade)
                   )}
                 >
-                  Grade {row.csec_grade}
+                  Grade {row.predicted_grade}
                 </span>
               </td>
             </tr>

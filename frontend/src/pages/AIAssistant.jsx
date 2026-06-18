@@ -13,7 +13,7 @@ const TABS = [
 function ExplainTab() {
   const [topic, setTopic] = useState('')
   const [subject, setSubject] = useState('')
-  const [level, setLevel] = useState('CSEC')
+  const [level, setLevel] = useState('High School')
   const [loading, setLoading] = useState(false)
   const [explanation, setExplanation] = useState('')
   const [error, setError] = useState(null)
@@ -57,9 +57,9 @@ function ExplainTab() {
             onChange={(e) => setLevel(e.target.value)}
             className="px-3 py-2 rounded-lg bg-background border border-white/10 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
           >
-            <option value="CSEC">CSEC</option>
-            <option value="CAPE">CAPE</option>
             <option value="Beginner">Beginner</option>
+            <option value="High School">High School</option>
+            <option value="College">College</option>
           </select>
         </div>
         <button

@@ -30,7 +30,7 @@ def explain():
     data = request.get_json(silent=True) or {}
     topic = data.get("topic")
     subject = data.get("subject")
-    level = data.get("level", "CSEC")
+    level = data.get("level", "High School")
 
     if not topic or not subject:
         return jsonify({"error": "topic and subject are required"}), 400

@@ -24,12 +24,11 @@ export function cn(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export function csecGradeColor(grade) {
-  const g = Number(grade)
-  if (g <= 2) {
+export function gradeColor(grade) {
+  if (grade === 'A' || grade === 'B') {
     return 'bg-green-500/20 text-green-400 border border-green-500/30'
   }
-  if (g <= 4) {
+  if (grade === 'C' || grade === 'D') {
     return 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
   }
   return 'bg-red-500/20 text-red-400 border border-red-500/30'

@@ -74,7 +74,7 @@ export default function Grades() {
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
           <h1 className="text-2xl font-bold">Grades</h1>
-          <p className="text-text/60 mt-1">Track your CSEC performance by subject.</p>
+          <p className="text-text/60 mt-1">Track your performance by subject.</p>
         </div>
         <button
           onClick={() => setShowForm((s) => !s)}

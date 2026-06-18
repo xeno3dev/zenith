@@ -10,19 +10,19 @@ from app.models.subject import Subject
 grades_bp = Blueprint("grades", __name__)
 
 
-def _score_to_csec_grade(percentage: float) -> int:
-    """Map a weighted average percentage to a CSEC grade (1=best, 6=worst)."""
+def _score_to_letter_grade(percentage: float) -> str:
+    """Map a weighted average percentage to a letter grade."""
     if percentage >= 90:
-        return 1
+        return "A"
     if percentage >= 80:
-        return 2
+        return "B"
     if percentage >= 70:
-        return 3
+        return "C"
     if percentage >= 55:
-        return 4
+        return "D"
     if percentage >= 40:
-        return 5
-    return 6
+        return "E"
+    return "F"
 
 
 @grades_bp.route("/grades", methods=["GET"])
@@ -65,7 +65,7 @@ def grades_summary():
                 "subject_id": subject_id,
                 "subject_name": subject.name if subject else None,
                 "weighted_average": round(weighted_average, 2),
-                "csec_grade": _score_to_csec_grade(weighted_average),
+                "predicted_grade": _score_to_letter_grade(weighted_average),
             }
         )
 

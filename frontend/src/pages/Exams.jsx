@@ -15,7 +15,7 @@ export default function Exams() {
     title: '',
     subject_id: '',
     exam_date: '',
-    exam_type: 'test',
+    exam_type: 'internal',
     notes: '',
   })
 
@@ -50,7 +50,7 @@ export default function Exams() {
         setExams((prev) => [...prev, res.data])
         toast.success('Exam added')
         setShowForm(false)
-        setForm({ title: '', subject_id: '', exam_date: '', exam_type: 'test', notes: '' })
+        setForm({ title: '', subject_id: '', exam_date: '', exam_type: 'internal', notes: '' })
       })
       .catch(() => toast.error('Could not create exam'))
   }
@@ -112,11 +112,9 @@ export default function Exams() {
               onChange={handleChange}
               className="px-3 py-2 rounded-lg bg-background border border-white/10 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
             >
-              <option value="test">Test</option>
-              <option value="quiz">Quiz</option>
+              <option value="internal">Internal</option>
+              <option value="external">External</option>
               <option value="mock">Mock Exam</option>
-              <option value="csec">CSEC</option>
-              <option value="cape">CAPE</option>
             </select>
           </div>
           <textarea

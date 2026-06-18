@@ -150,7 +150,7 @@ export default function PodcastGenerator({ onReady }) {
             type="text"
             value={subject}
             onChange={(e) => setSubject(e.target.value)}
-            placeholder="e.g. CSEC Biology"
+            placeholder="e.g. Biology"
             className="w-full px-3 py-2 rounded-lg bg-background border border-white/10 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
           />
           <input
