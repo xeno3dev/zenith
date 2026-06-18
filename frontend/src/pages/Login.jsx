@@ -30,7 +30,7 @@ export default function Login() {
     <div className="min-h-screen flex items-center justify-center bg-background px-4">
       <div className="w-full max-w-md bg-surface rounded-2xl p-8 shadow-xl">
         <div className="flex items-center justify-center mb-6">
-          <img src="/logo.png" alt="Zenith" className="h-14 w-auto" />
+          <img src="/logo.png" alt="Zenith" className="h-14 w-auto drop-shadow-[0_0_18px_rgba(255,217,61,0.5)]" />
         </div>
         <h2 className="text-lg font-semibold text-center mb-6 text-text/80">
           Log in to your account
@@ -62,7 +62,7 @@ export default function Login() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-2.5 rounded-lg bg-primary text-white font-semibold hover:opacity-90 transition-opacity disabled:opacity-50"
+            className="w-full py-2.5 rounded-lg bg-primary text-background font-semibold hover:opacity-90 transition-opacity disabled:opacity-50"
           >
             {loading ? 'Logging in...' : 'Log In'}
           </button>

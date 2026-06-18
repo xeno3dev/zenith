@@ -6,7 +6,7 @@
 @custom-variant dark (&:is(.dark *));
 
 body {
-  background-color: #0D0B1F;
+  background-color: #07060F;
   color: #FFFFFF;
   font-family: 'Inter', sans-serif;
 }
@@ -21,7 +21,7 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #161228;
+  background: #110E22;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -158,22 +158,22 @@ body {
 }
 
 :root {
-  --background: #0D0B1F;
+  --background: #07060F;
   --foreground: #FFFFFF;
-  --card: #161228;
+  --card: #110E22;
   --card-foreground: #FFFFFF;
-  --popover: #161228;
+  --popover: #110E22;
   --popover-foreground: #FFFFFF;
   --primary: #FFD93D;
-  --primary-foreground: #0D0B1F;
-  --secondary: #161228;
+  --primary-foreground: #07060F;
+  --secondary: #110E22;
   --secondary-foreground: #FFFFFF;
-  --muted: #161228;
+  --muted: #110E22;
   --muted-foreground: rgba(255,255,255,0.5);
   --accent: #FFD93D;
-  --accent-foreground: #0D0B1F;
+  --accent-foreground: #07060F;
   --destructive: #ef4444;
-  --border: rgba(255,255,255,0.07);
-  --input: #161228;
+  --border: rgba(255,255,255,0.1);
+  --input: #110E22;
   --ring: #FFD93D;
 }

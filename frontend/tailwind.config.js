@@ -9,8 +9,8 @@ export default {
       colors: {
         primary: '#FFD93D',
         accent: '#FFD93D',
-        background: '#0D0B1F',
-        surface: '#161228',
+        background: '#07060F',
+        surface: '#110E22',
         text: '#FFFFFF',
       },
       fontFamily: {

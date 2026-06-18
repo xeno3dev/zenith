@@ -49,7 +49,7 @@ export default function Sidebar() {
   return (
     <aside className="hidden md:flex fixed top-0 left-0 h-full w-64 bg-surface flex-col border-r border-white/5 z-20">
       <div className="px-6 py-5 border-b border-white/5">
-        <img src="/logo.png" alt="Zenith" className="h-10 w-auto" />
+        <img src="/logo.png" alt="Zenith" className="h-10 w-auto drop-shadow-[0_0_12px_rgba(255,217,61,0.4)]" />
         <p className="text-xs text-text/50 mt-1">by Xeno Solutions</p>
       </div>
 
