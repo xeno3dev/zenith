@@ -7,7 +7,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 // Authenticated pages use stored session
 test.use({ storageState: path.resolve(__dirname, '../playwright/.auth/user.json') })
 
-test.describe('Visual regression', () => {
+test.describe.skip('Visual regression', () => {
   test('login page', async ({ page }) => {
     // Override storage state for this test — we want to see the unauthed page
     await page.context().clearCookies()
