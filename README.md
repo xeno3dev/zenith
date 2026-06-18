@@ -2,7 +2,7 @@
 
 **(Patially) AI-powered student organizer.**
 
-Built by [Xeno Solutions](https://github.com/xeno3dev) as a [Hack Club Stardance](https://hackclub.com/) submission.
+Built by [Xeno Solutions](https://github.com/xeno3dev) as a [Hack Club Stardance](https://stardance.hackclub.com/) submission.
 
 Zenith is a student productivity app built to help students study smarter. It brings together timetable management, assignment and exam tracking, grade estimation, and flashcards in one clean app, with an AI study assistant powered by Claude and an AI-generated podcast feature that turns your study topics into audio you can actually learn from (Like NotebookLM).
 
