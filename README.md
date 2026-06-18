@@ -1,12 +1,12 @@
 # Zenith
 
-**(Patially) AI-powered student organizer for Caribbean CSEC/CAPE students.**
+**(Patially) AI-powered student organizer.**
 
 Built by [Xeno Solutions](https://github.com/xeno3dev) as a [Hack Club Stardance](https://hackclub.com/) submission.
 
-Zenith is a study companion that understands the Caribbean classroom: CSEC/CAPE subjects, grading conventions, and exam culture. It bundles a timetable builder, assignment & exam trackers, a weighted-grade tracker with CSEC grade prediction, a spaced-repetition flashcard system, an AI study assistant, and a flagship feature — an AI-generated study **podcast** where two hosts, Ari and Sol, talk through your notes like a NotebookLM-style deep dive.
+Zenith is a student productivity app built to help students study smarter. It brings together timetable management, assignment and exam tracking, grade estimation, and flashcards in one clean app, with an AI study assistant powered by Claude and an AI-generated podcast feature that turns your study topics into audio you can actually learn from (Like NotebookLM).
 
-See [`BLUEPRINT.md`](./BLUEPRINT.md) for the full project blueprint (features, architecture, database schema, API reference, SM-2 algorithm, CSEC/CAPE grading specifics, roadmap, and deployment notes).
+See [`BLUEPRINT.md`](./BLUEPRINT.md) for the full project blueprint (features, architecture, database schema, API reference, SM-2 algorithm, roadmap, and deployment notes).
 
 ## Tech stack
 
