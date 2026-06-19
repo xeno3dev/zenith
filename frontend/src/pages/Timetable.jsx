@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import useSubjects from '../hooks/useSubjects'
 import TimetableGrid from '../components/timetable/TimetableGrid'
 import SubjectPicker from '../components/timetable/SubjectPicker'
+import api from '../lib/api'
 
-const STORAGE_KEY = 'zenith_timetable'
 const PERIODS = [1, 2, 3, 4, 5, 6, 7]
 
 export default function Timetable() {
@@ -12,20 +12,15 @@ export default function Timetable() {
   const [activeCell, setActiveCell] = useState(null)
 
   useEffect(() => {
-    const saved = localStorage.getItem(STORAGE_KEY)
-    if (saved) {
-      try {
-        setGrid(JSON.parse(saved))
-      } catch {
-        setGrid({})
-      }
-    }
+    api.get('/timetable')
+      .then((res) => setGrid(res.data || {}))
+      .catch(() => setGrid({}))
   }, [])
 
-  const persist = (next) => {
+  const persist = useCallback((next) => {
     setGrid(next)
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(next))
-  }
+    api.put('/timetable', next).catch(() => {})
+  }, [])
 
   const handleCellClick = (day, period) => {
     setActiveCell({ day, period })
