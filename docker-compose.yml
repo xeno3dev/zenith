@@ -33,7 +33,7 @@ services:
     ports:
       - "5000:5000"
     volumes:
-      - zenith_audio:${AUDIO_STORAGE_PATH:-/app/audio}
+      - zenith_audio:/app/audio
     networks:
       - zenith-net
 
