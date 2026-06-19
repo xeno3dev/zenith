@@ -14,6 +14,7 @@ class Podcast(db.Model):
     script = db.Column(db.JSON, nullable=True)  # [{speaker, text}, ...]
     audio_path = db.Column(db.String(500), nullable=True)
     duration_seconds = db.Column(db.Integer, nullable=True)
+    subject = db.Column(db.String(255), nullable=True)  # optional subject tag
     status = db.Column(db.String(20), default="pending")  # pending|generating|ready|failed
     error_message = db.Column(db.Text, nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
@@ -23,6 +24,7 @@ class Podcast(db.Model):
             "id": self.id,
             "user_id": self.user_id,
             "title": self.title,
+            "subject": self.subject,
             "source_type": self.source_type,
             "source_content": self.source_content,
             "script": self.script,

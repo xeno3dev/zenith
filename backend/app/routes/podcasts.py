@@ -39,6 +39,7 @@ def create_podcast():
     podcast = Podcast(
         user_id=user_id,
         title=title,
+        subject=data.get("subject"),
         source_type=source_type,
         source_content=source_content,
         status="pending",

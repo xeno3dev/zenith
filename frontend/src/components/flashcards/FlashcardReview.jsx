@@ -71,36 +71,33 @@ export default function FlashcardReview({ deckId }) {
         {index} / {cards.length}
       </p>
 
+      {/* Card flip — proper CSS 3D: parent rotates, faces pre-positioned with backface-visibility hidden */}
       <div
         onClick={() => setFlipped((f) => !f)}
         className="cursor-pointer select-none"
         style={{ perspective: '1000px' }}
       >
         <div
-          className="relative bg-surface rounded-2xl min-h-[220px] flex items-center justify-center p-8 text-center transition-transform duration-300"
+          className="relative rounded-2xl transition-transform duration-500"
           style={{
-            transform: flipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
             transformStyle: 'preserve-3d',
+            transform: flipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
+            minHeight: '220px',
           }}
         >
+          {/* Front face */}
           <div
-            style={{
-              backfaceVisibility: 'hidden',
-              transform: flipped ? 'rotateY(180deg)' : 'none',
-              position: flipped ? 'absolute' : 'static',
-              opacity: flipped ? 0 : 1,
-            }}
+            className="absolute inset-0 bg-surface rounded-2xl flex flex-col items-center justify-center p-8 text-center"
+            style={{ backfaceVisibility: 'hidden' }}
           >
             <p className="text-lg font-medium">{card.front}</p>
             <p className="text-xs text-text/40 mt-3">Tap to flip</p>
           </div>
+
+          {/* Back face — pre-rotated 180° so it faces away initially and comes forward on flip */}
           <div
-            style={{
-              backfaceVisibility: 'hidden',
-              transform: flipped ? 'none' : 'rotateY(180deg)',
-              position: flipped ? 'static' : 'absolute',
-              opacity: flipped ? 1 : 0,
-            }}
+            className="absolute inset-0 bg-surface rounded-2xl flex flex-col items-center justify-center p-8 text-center"
+            style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
           >
             <p className="text-lg font-medium text-accent">{card.back}</p>
             <p className="text-xs text-text/40 mt-3">Tap to flip back</p>

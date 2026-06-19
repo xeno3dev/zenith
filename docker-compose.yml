@@ -30,6 +30,7 @@ services:
         condition: service_healthy
     volumes:
       - zenith_audio:/app/audio
+      - zenith_resources:/app/resources
     networks:
       - zenith-net
 
@@ -46,6 +47,14 @@ services:
     networks:
       - zenith-net
 
+  kokoro:
+    image: ghcr.io/remsky/kokoro-fastapi-cpu:latest
+    restart: unless-stopped
+    expose:
+      - "8880"
+    networks:
+      - zenith-net
+
 networks:
   zenith-net:
     driver: bridge
@@ -53,3 +62,4 @@ networks:
 volumes:
   zenith_db_data:
   zenith_audio:
+  zenith_resources:

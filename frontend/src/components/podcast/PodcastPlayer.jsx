@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Play, Pause, ChevronDown, ChevronUp } from 'lucide-react'
 import { cn } from '../../lib/utils'
 import ScriptViewer from './ScriptViewer'
+import useAuthStore from '../../store/authStore'
 
 const SPEEDS = [0.75, 1, 1.25, 1.5]
 
@@ -13,6 +14,7 @@ function formatTime(seconds) {
 }
 
 export default function PodcastPlayer({ podcast }) {
+  const token = useAuthStore((s) => s.token)
   const audioRef = useRef(null)
   const [isPlaying, setIsPlaying] = useState(false)
   const [currentTime, setCurrentTime] = useState(0)
@@ -65,7 +67,8 @@ export default function PodcastPlayer({ podcast }) {
 
   return (
     <div className="bg-surface rounded-xl p-5 space-y-4">
-      <audio ref={audioRef} src={`/api/podcasts/${podcast.id}/audio`} className="hidden" />
+      {/* Token in query param because browser <audio> elements cannot send Authorization headers */}
+      <audio ref={audioRef} src={`/api/podcasts/${podcast.id}/audio?token=${token}`} className="hidden" />
 
       <div>
         <h3 className="font-semibold">{podcast.title}</h3>

@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from 'react'
-import { ArrowLeft, Plus } from 'lucide-react'
+import { ArrowLeft, Plus, Trash2 } from 'lucide-react'
 import { toast } from 'sonner'
 import api from '../lib/api'
 import useFlashcards from '../hooks/useFlashcards'
@@ -16,6 +16,8 @@ export default function Flashcards() {
   const [dueCounts, setDueCounts] = useState({})
   const [showNewDeck, setShowNewDeck] = useState(false)
   const [showImportFor, setShowImportFor] = useState(null)
+  const [showAddCardFor, setShowAddCardFor] = useState(null)
+  const [addCardForm, setAddCardForm] = useState({ front: '', back: '' })
   const [form, setForm] = useState({ name: '', description: '', subject_id: '' })
 
   useEffect(() => {
@@ -62,6 +64,33 @@ export default function Flashcards() {
         fetchDecks()
       })
       .catch(() => toast.error('Could not create deck'))
+  }
+
+  const handleDeleteDeck = (deck) => {
+    if (!window.confirm(`Delete "${deck.name}"? This will remove all cards inside.`)) return
+    api
+      .delete(`/decks/${deck.id}`)
+      .then(() => {
+        toast.success('Deck deleted')
+        fetchDecks()
+        loadDueCounts()
+      })
+      .catch(() => toast.error('Could not delete deck'))
+  }
+
+  const handleAddCard = (e, deckId) => {
+    e.preventDefault()
+    if (!addCardForm.front.trim() || !addCardForm.back.trim()) return
+    api
+      .post(`/decks/${deckId}/cards`, addCardForm)
+      .then(() => {
+        toast.success('Card added')
+        setAddCardForm({ front: '', back: '' })
+        setShowAddCardFor(null)
+        fetchDecks()
+        loadDueCounts()
+      })
+      .catch(() => toast.error('Could not add card'))
   }
 
   if (view === 'review' && selectedDeck) {
@@ -151,12 +180,60 @@ export default function Flashcards() {
                 dueCount={dueCounts[deck.id] || 0}
                 onClick={() => handleEnterReview(deck)}
               />
-              <button
-                onClick={() => setShowImportFor(showImportFor === deck.id ? null : deck.id)}
-                className="text-xs text-primary hover:underline"
-              >
-                {showImportFor === deck.id ? 'Hide import' : 'Import CSV'}
-              </button>
+
+              <div className="flex items-center gap-3 px-1">
+                <button
+                  onClick={() => setShowAddCardFor(showAddCardFor === deck.id ? null : deck.id)}
+                  className="text-xs text-primary hover:underline"
+                >
+                  {showAddCardFor === deck.id ? 'Hide' : 'Add Card'}
+                </button>
+                <button
+                  onClick={() => setShowImportFor(showImportFor === deck.id ? null : deck.id)}
+                  className="text-xs text-primary hover:underline"
+                >
+                  {showImportFor === deck.id ? 'Hide import' : 'Import CSV'}
+                </button>
+                <button
+                  onClick={() => handleDeleteDeck(deck)}
+                  aria-label={`Delete ${deck.name}`}
+                  className="text-xs text-red-400 hover:text-red-300 hover:underline ml-auto flex items-center gap-1"
+                >
+                  <Trash2 size={12} />
+                  Delete
+                </button>
+              </div>
+
+              {showAddCardFor === deck.id && (
+                <form
+                  onSubmit={(e) => handleAddCard(e, deck.id)}
+                  className="bg-surface rounded-xl p-4 space-y-2"
+                >
+                  <input
+                    type="text"
+                    required
+                    placeholder="Front (question)"
+                    value={addCardForm.front}
+                    onChange={(e) => setAddCardForm((p) => ({ ...p, front: e.target.value }))}
+                    className="w-full px-3 py-2 rounded-lg bg-background border border-white/10 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                  />
+                  <input
+                    type="text"
+                    required
+                    placeholder="Back (answer)"
+                    value={addCardForm.back}
+                    onChange={(e) => setAddCardForm((p) => ({ ...p, back: e.target.value }))}
+                    className="w-full px-3 py-2 rounded-lg bg-background border border-white/10 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                  />
+                  <button
+                    type="submit"
+                    className="px-3 py-1.5 rounded-lg bg-primary text-background text-xs font-medium hover:opacity-90"
+                  >
+                    Add Card
+                  </button>
+                </form>
+              )}
+
               {showImportFor === deck.id && (
                 <FlashcardImport
                   deckId={deck.id}
