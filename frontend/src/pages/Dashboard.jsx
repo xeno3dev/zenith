@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { ListTodo, GraduationCap, BarChart3 } from 'lucide-react'
+import { ListTodo, GraduationCap, BarChart3, Timer } from 'lucide-react'
 import api from '../lib/api'
 import useAuthStore from '../store/authStore'
 import { formatDate, daysUntil } from '../lib/utils'
@@ -11,6 +11,7 @@ export default function Dashboard() {
   const [assignments, setAssignments] = useState([])
   const [exams, setExams] = useState([])
   const [gradeSummary, setGradeSummary] = useState([])
+  const [studySummary, setStudySummary] = useState(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -19,11 +20,13 @@ export default function Dashboard() {
       api.get('/assignments').catch(() => ({ data: [] })),
       api.get('/exams', { params: { upcoming: true } }).catch(() => ({ data: [] })),
       api.get('/grades/summary').catch(() => ({ data: [] })),
+      api.get('/study-sessions/summary').catch(() => ({ data: null })),
     ])
-      .then(([a, e, g]) => {
+      .then(([a, e, g, ss]) => {
         setAssignments(a.data || [])
         setExams(e.data || [])
         setGradeSummary(g.data || [])
+        setStudySummary(ss.data || null)
       })
       .finally(() => setLoading(false))
   }, [location.key])
@@ -53,6 +56,10 @@ export default function Dashboard() {
     .sort((a, b) => new Date(a.exam_date) - new Date(b.exam_date))
     .slice(0, 5)
 
+  const studyHours = studySummary
+    ? (studySummary.total_minutes / 60).toFixed(1)
+    : null
+
   const stats = [
     {
       label: 'Due this week',
@@ -72,6 +79,12 @@ export default function Dashboard() {
       icon: BarChart3,
       color: 'text-primary',
     },
+    {
+      label: 'Study hours (7d)',
+      value: studyHours !== null ? `${studyHours}h` : '—',
+      icon: Timer,
+      color: 'text-accent',
+    },
   ]
 
   return (
@@ -83,7 +96,7 @@ export default function Dashboard() {
         <p className="text-text/60 mt-1">Here's what's happening with your studies.</p>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {stats.map(({ label, value, icon: Icon, color }) => (
           <div key={label} className="bg-surface rounded-xl p-4">
             <Icon className={color} size={22} />
@@ -92,6 +105,33 @@ export default function Dashboard() {
           </div>
         ))}
       </div>
+
+      {studySummary && studySummary.by_subject?.length > 0 && (
+        <div className="bg-surface rounded-xl p-5">
+          <h2 className="font-semibold mb-3">Study time this week</h2>
+          <div className="space-y-2">
+            {studySummary.by_subject.map(({ subject, minutes }) => {
+              const pct = studySummary.total_minutes > 0
+                ? Math.round((minutes / studySummary.total_minutes) * 100)
+                : 0
+              return (
+                <div key={subject}>
+                  <div className="flex justify-between text-xs text-text/60 mb-1">
+                    <span>{subject}</span>
+                    <span>{(minutes / 60).toFixed(1)}h</span>
+                  </div>
+                  <div className="h-1.5 rounded-full bg-white/10">
+                    <div
+                      className="h-full rounded-full bg-primary"
+                      style={{ width: `${pct}%` }}
+                    />
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      )}
 
       <div className="grid md:grid-cols-2 gap-6">
         <div className="bg-surface rounded-xl p-5">

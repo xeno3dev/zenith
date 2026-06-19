@@ -12,6 +12,8 @@ from app.models.flashcard import Flashcard
 from app.models.grade import Grade
 from app.models.podcast import Podcast
 from app.models.timetable import Timetable
+from app.models.study_session import StudySession
+from app.models.resource import Resource
 
 __all__ = [
     "User",
@@ -23,4 +25,6 @@ __all__ = [
     "Grade",
     "Podcast",
     "Timetable",
+    "StudySession",
+    "Resource",
 ]

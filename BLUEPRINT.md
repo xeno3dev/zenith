@@ -29,7 +29,11 @@ Other QoL improvements worth exploring next:
 ## 3. Features
 
 ### Timetable Builder
-A weekly schedule grid (Monday–Friday × configurable periods) where students assign subjects to time slots. Each subject carries a color, so the grid is scannable at a glance. Period blocks show subject name, teacher, and room. The grid can be exported as an image for quick sharing or printing.
+A schedule grid where students assign subjects to time slots. Supports two modes:
+- **Weekly mode** — Mon–Fri (or any subset of days, including Sat/Sun) with configurable visible days.
+- **Rotation mode** — schools that don't follow a fixed Mon–Fri cycle use N rotation days (default 6, configurable 2–14) with fully editable day labels (e.g. "Day 1" through "Day 6", or custom names). The column structure works identically to weekly mode; the grid key is just the label string instead of the weekday name.
+
+Both modes share the same period-row system (1–12 configurable periods) and the same cell-assignment flow. Config is stored in the timetable blob under a `_config` key, so existing weekly data is fully backward-compatible. Each subject carries a color, so the grid is scannable at a glance.
 
 ### Assignment Tracker
 Every assignment belongs to a subject and carries a due date, a priority flag (1–3), and a status that moves through a simple pipeline: **todo → in progress → done**. The assignment list can be filtered by subject, status, or "due before" a given date, and the UI surfaces a live countdown so the most urgent work is always visible first. Assignments group naturally by subject so a student can see at a glance how much outstanding work each class has.
@@ -54,6 +58,12 @@ Powered by the Claude API, with three modes:
 
 ### Podcast Generator (Flagship)
 Turns study material into an audio conversation between two AI hosts. Full technical breakdown in Section 4.
+
+### Resource Attachments
+Files (PDFs, Word docs, images, plain-text) can be attached to any subject, assignment, or exam. Uploaded files are stored server-side; text is extracted immediately (pdfplumber for PDFs, python-docx for Word, UTF-8 decode for plain text). PDFs and images are also uploaded to the Anthropic Files API in a background thread, caching the `file_id` so Claude can read them natively without re-uploading on every chat. The AI assistant's `read_resource` tool returns a Files API document block when a `file_id` is available, or falls back to the extracted text for Word/plain-text files. A `generate_flashcards_from_resource` tool lets Claude convert extracted text directly into front/back flashcard pairs.
+
+### Quiz (In Progress)
+A quiz engine that generates adaptive practice questions from flashcard decks and uploaded resources. Features planned: MCQ and short-answer question types, instant AI scoring, retry-missed-questions mode, score history, and PDF export. The quiz page is always visible in the sidebar (no feature flag) with an "In Progress" badge while the engine is being built.
 
 ## 4. Podcast Generator — Deep Dive
 
@@ -184,6 +194,24 @@ A good Ari/Sol script for a History topic follows an arc, not a transcript of fa
 | | error_message | text | nullable |
 | | created_at | datetime | default now |
 
+| **study_sessions** | id | integer | primary key |
+| | user_id | UUID | FK → users.id, indexed |
+| | subject_id | integer | FK → subjects.id, nullable |
+| | subject_name | string | cached name at time of session |
+| | duration_minutes | integer | length of the Pomodoro work period |
+| | completed_at | datetime | when the timer finished |
+| **resources** | id | integer | primary key |
+| | user_id | UUID | FK → users.id, indexed |
+| | entity_type | string | `subject` / `assignment` / `exam` |
+| | entity_id | integer | ID of the linked entity (composite index with entity_type) |
+| | original_name | string | filename as uploaded |
+| | file_path | string | server-side storage path |
+| | mime_type | string | detected MIME type |
+| | file_size | integer | bytes |
+| | anthropic_file_id | string | Files API `file_id` cache, nullable |
+| | extracted_text | text | pdfplumber / python-docx extraction, nullable |
+| | created_at | datetime | default now |
+
 All foreign-key-bearing tables index `user_id` (and `subject_id`/`deck_id` where present) since virtually every query is scoped to "this user's records."
 
 ## 7. API Reference
@@ -250,6 +278,20 @@ All routes below are prefixed `/api` and, except where noted, require a JWT bear
 | GET | /podcasts/:id/audio | yes | serves the MP3 |
 | DELETE | /podcasts/:id | yes | deletes record + audio file |
 
+### `study-sessions`
+| Method | Path | Auth | Description |
+|---|---|---|---|
+| POST | /study-sessions | yes | `{duration_minutes, subject_id?, subject_name?}` → logs a completed Pomodoro session |
+| GET | /study-sessions/summary | yes | 7-day total + per-subject breakdown |
+
+### `resources`
+| Method | Path | Auth | Description |
+|---|---|---|---|
+| POST | /resources | yes | multipart form: `file`, `entity_type`, `entity_id` → upload + text extraction + Files API background upload |
+| GET | /resources | yes | `?entity_type=&entity_id=` → list attachments |
+| GET | /resources/:id/file | yes | serve the raw file (download) |
+| DELETE | /resources/:id | yes | delete record + file from disk |
+
 ## 8. Spaced Repetition Algorithm (SM-2)
 
 Zenith's flashcard reviews are scheduled using **SM-2**, the algorithm originally published for SuperMemo and later adopted (with tweaks) by Anki. Implemented in `srs_service.py`.
@@ -303,8 +345,9 @@ Grades are logged per assessment with a score, a max score, and a weight, so a h
 - **Phase 2 – Study Tools (Weeks 3–4).** Flashcard system with SM-2 SRS, Pomodoro timer, CSV import.
 - **Phase 3 – AI Features (Week 5).** AI chat assistant, explain-topic mode, quiz mode.
 - **Phase 4 – Podcast Generator (Weeks 6–7).** Script generation, Kokoro TTS integration, audio pipeline, `PodcastPlayer` UI.
-- **Phase 5 – Polish & Launch (Week 8).** PWA support, mobile optimization, subject presets, open source README, demo video.
-- **Phase 6 – Further QoL improvements (future).** Daily "what should I do right now" digest, calendar (ICS) sync, auto-generated flashcards from notes, clip-to-Zenith capture extension.
+- **Phase 5 – Study Time Tracking.** Pomodoro sessions logged to backend; 7-day summary on Dashboard; AI `get_study_time` tool. Timetable rotation mode (configurable N-day cycle with custom labels). PWA manifest.
+- **Phase 6 – Resource Attachments & Quiz Placeholder.** File upload system (PDF/Word/image/text) attached to subjects, assignments, and exams. Server-side text extraction (pdfplumber, python-docx). Anthropic Files API background upload with `file_id` caching. AI tools: `list_resources`, `read_resource`, `generate_flashcards_from_resource`. Quiz page (In Progress placeholder).
+- **Phase 7 – Further QoL improvements (future).** Full quiz engine (MCQ + short-answer + scoring + history). Daily "what should I do right now" digest. Calendar (ICS) sync. Clip-to-Zenith capture extension. Auto-generated flashcard decks from resources.
 
 ## 11. Deployment
 

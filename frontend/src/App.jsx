@@ -17,6 +17,7 @@ import Register from './pages/Register'
 import Subjects from './pages/Subjects'
 import Pomodoro from './pages/Pomodoro'
 import ComingSoon from './pages/ComingSoon'
+import Quiz from './pages/Quiz'
 
 const COMING_SOON = new Set(
   (import.meta.env.VITE_COMING_SOON || '').split(',').map((s) => s.trim()).filter(Boolean)
@@ -60,6 +61,7 @@ export default function App() {
         <Route path="/ai" element={<AIAssistant />} />
         <Route path="/subjects" element={<Subjects />} />
         <Route path="/pomodoro" element={<Pomodoro />} />
+        <Route path="/quiz" element={<Quiz />} />
       </Route>
 
       <Route path="*" element={<Navigate to="/" replace />} />

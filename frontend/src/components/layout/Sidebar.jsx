@@ -10,6 +10,7 @@ import {
   Sparkles,
   BookOpen,
   Timer,
+  Brain,
   LogOut,
 } from 'lucide-react'
 import useAuthStore from '../../store/authStore'
@@ -26,6 +27,7 @@ const links = [
   { to: '/podcasts', label: 'Podcasts', icon: Mic },
   { to: '/ai', label: 'AI Assistant', icon: Sparkles },
   { to: '/subjects', label: 'Subjects', icon: BookOpen },
+  { to: '/quiz', label: 'Quiz', icon: Brain, badge: 'Soon' },
 ]
 
 function getInitials(name) {
@@ -56,7 +58,7 @@ export default function Sidebar() {
       </div>
 
       <nav className="flex-1 py-4 overflow-y-auto">
-        {links.map(({ to, label, icon: Icon }) => (
+        {links.map(({ to, label, icon: Icon, badge }) => (
           <NavLink
             key={to}
             to={to}
@@ -71,7 +73,12 @@ export default function Sidebar() {
             }
           >
             <Icon size={18} />
-            <span>{label}</span>
+            <span className="flex-1">{label}</span>
+            {badge && (
+              <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-accent/20 text-accent font-semibold">
+                {badge}
+              </span>
+            )}
           </NavLink>
         ))}
       </nav>

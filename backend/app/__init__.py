@@ -30,7 +30,9 @@ def create_app(config_name="development"):
     from app.routes.grades import grades_bp
     from app.routes.timetable import timetable_bp
     from app.routes.ai import ai_bp  # Phase 3
-    # from app.routes.podcasts import podcasts_bp  # Phase 4
+    from app.routes.podcasts import podcasts_bp  # Phase 4
+    from app.routes.study_sessions import study_sessions_bp  # Phase 5
+    from app.routes.resources import resources_bp  # Phase 6
 
     app.register_blueprint(auth_bp, url_prefix="/api/auth")
     app.register_blueprint(subjects_bp, url_prefix="/api")
@@ -41,7 +43,9 @@ def create_app(config_name="development"):
     app.register_blueprint(grades_bp, url_prefix="/api")
     app.register_blueprint(timetable_bp, url_prefix="/api")
     app.register_blueprint(ai_bp, url_prefix="/api/ai")  # Phase 3
-    # app.register_blueprint(podcasts_bp, url_prefix="/api")  # Phase 4
+    app.register_blueprint(podcasts_bp, url_prefix="/api")  # Phase 4
+    app.register_blueprint(study_sessions_bp, url_prefix="/api")  # Phase 5
+    app.register_blueprint(resources_bp, url_prefix="/api")  # Phase 6
 
     # JWT error handlers — always return 401 so the frontend interceptor
     # clears the stored token and redirects to login automatically.

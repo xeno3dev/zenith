@@ -1,4 +1,7 @@
+import { useState } from 'react'
+import { Paperclip } from 'lucide-react'
 import { formatDate, daysUntil, cn } from '../../lib/utils'
+import ResourcePanel from '../resources/ResourcePanel'
 
 const PRIORITY_COLORS = {
   high: 'bg-red-500/20 text-red-400 border-red-500/30',
@@ -9,6 +12,7 @@ const PRIORITY_COLORS = {
 const STATUSES = ['todo', 'in_progress', 'done']
 
 export default function AssignmentCard({ assignment, subject, onStatusChange }) {
+  const [filesOpen, setFilesOpen] = useState(false)
   const days = daysUntil(assignment.due_date)
   let countdownText
   if (days === 0) countdownText = 'Due today'
@@ -19,6 +23,16 @@ export default function AssignmentCard({ assignment, subject, onStatusChange }) 
     <div className="bg-surface rounded-xl p-4 flex flex-col gap-3">
       <div className="flex items-start justify-between gap-2">
         <h3 className="font-semibold text-sm flex-1">{assignment.title}</h3>
+        <button
+          onClick={() => setFilesOpen((o) => !o)}
+          className={cn(
+            'shrink-0 transition-colors p-0.5',
+            filesOpen ? 'text-primary' : 'text-text/40 hover:text-text/70'
+          )}
+          title="Files"
+        >
+          <Paperclip size={13} />
+        </button>
         <span
           className={cn(
             'text-xs px-2 py-0.5 rounded-full border shrink-0',
@@ -63,6 +77,10 @@ export default function AssignmentCard({ assignment, subject, onStatusChange }) 
           </button>
         ))}
       </div>
+
+      {filesOpen && (
+        <ResourcePanel entityType="assignment" entityId={assignment.id} />
+      )}
     </div>
   )
 }

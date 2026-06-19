@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
 import { toast } from 'sonner'
-import { Plus, X } from 'lucide-react'
+import { Plus, X, Paperclip } from 'lucide-react'
 import api from '../lib/api'
+import ResourcePanel from '../components/resources/ResourcePanel'
 import useSubjects from '../hooks/useSubjects'
 import { formatDate, daysUntil, cn } from '../lib/utils'
 
@@ -11,6 +12,7 @@ export default function Exams() {
   const [loading, setLoading] = useState(true)
   const [upcomingOnly, setUpcomingOnly] = useState(true)
   const [showForm, setShowForm] = useState(false)
+  const [openFilesId, setOpenFilesId] = useState(null)
   const [form, setForm] = useState({
     title: '',
     subject_id: '',
@@ -159,6 +161,13 @@ export default function Exams() {
               <div key={exam.id} className="bg-surface rounded-xl p-4 space-y-2">
                 <div className="flex items-start justify-between gap-2">
                   <h3 className="font-semibold text-sm flex-1">{exam.title}</h3>
+                  <button
+                    onClick={() => setOpenFilesId(openFilesId === exam.id ? null : exam.id)}
+                    className="text-text/40 hover:text-text/70 transition-colors p-0.5"
+                    title="Files"
+                  >
+                    <Paperclip size={13} />
+                  </button>
                   <span className="text-xs px-2 py-0.5 rounded-full bg-accent/20 text-accent border border-accent/30 shrink-0">
                     {exam.exam_type}
                   </span>
@@ -176,6 +185,9 @@ export default function Exams() {
                   {days >= 0 ? `in ${days} day${days === 1 ? '' : 's'}` : `${Math.abs(days)} days ago`}
                 </p>
                 {exam.notes && <p className="text-xs text-text/50">{exam.notes}</p>}
+                {openFilesId === exam.id && (
+                  <ResourcePanel entityType="exam" entityId={exam.id} />
+                )}
               </div>
             )
           })}

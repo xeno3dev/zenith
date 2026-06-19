@@ -4,13 +4,13 @@
 
 Built by [Xeno Solutions](https://github.com/xeno3dev) as a [Hack Club Stardance](https://stardance.hackclub.com/) submission.
 
-Zenith is a student productivity app built to help students study smarter. It brings together timetable management, assignment and exam tracking, grade estimation, and flashcards in one clean app, with an AI study assistant powered by Claude and an AI-generated podcast feature that turns your study topics into audio you can actually learn from (Like NotebookLM).
+Zenith is a student productivity app built to help students study smarter. It brings together timetable management, assignment and exam tracking, grade estimation, flashcards, and a Pomodoro study timer in one clean app — with an AI study assistant powered by Claude (that can read your uploaded PDFs and notes), an AI-generated podcast feature that turns your study topics into audio you can actually learn from (like NotebookLM), and resource attachments so your documents live right alongside the work they belong to.
 
 See [`BLUEPRINT.md`](./BLUEPRINT.md) for the full project blueprint (features, architecture, database schema, API reference, SM-2 algorithm, roadmap, and deployment notes).
 
 ## Tech stack
 
-- **Backend:** Python 3.12, Flask, Flask-SQLAlchemy, Flask-Migrate, Flask-JWT-Extended, PostgreSQL 16, Anthropic Claude API, pydub
+- **Backend:** Python 3.12, Flask, Flask-SQLAlchemy, Flask-Migrate, Flask-JWT-Extended, PostgreSQL 16, Anthropic Claude API, pydub, pdfplumber, python-docx
 - **Frontend:** Vite, React 18, React Router v6, Tailwind CSS, Zustand, axios
 - **TTS:** Kokoro TTS (self-hosted) or ElevenLabs
 - **Deployment:** Docker Compose

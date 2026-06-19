@@ -33,6 +33,11 @@ class Config:
     JWT_REFRESH_TOKEN_EXPIRES = int(
         os.environ.get("JWT_REFRESH_TOKEN_EXPIRES", 2592000)
     )
+    # Accept the token from both the Authorization header (normal API calls)
+    # and a `token` query-string parameter (browser <audio> src URLs which
+    # cannot send custom headers).
+    JWT_TOKEN_LOCATION = ["headers", "query_string"]
+    JWT_QUERY_STRING_NAME = "token"
 
     # AI / Anthropic
     ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
@@ -46,6 +51,11 @@ class Config:
     # Audio storage
     AUDIO_STORAGE_PATH = os.environ.get(
         "AUDIO_STORAGE_PATH", os.path.join(os.getcwd(), "audio_storage")
+    )
+
+    # Resource/attachment storage
+    RESOURCE_STORAGE_PATH = os.environ.get(
+        "RESOURCE_STORAGE_PATH", os.path.join(os.getcwd(), "resource_storage")
     )
 
     # Frontend / CORS

@@ -1,11 +1,12 @@
 import { useState } from 'react'
-import { Plus, X, Pencil, Trash2 } from 'lucide-react'
+import { Plus, X, Pencil, Trash2, Paperclip } from 'lucide-react'
 import { toast } from 'sonner'
 import useSubjects from '../hooks/useSubjects'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent } from '@/components/ui/card'
+import ResourcePanel from '../components/resources/ResourcePanel'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -25,6 +26,7 @@ export default function Subjects() {
   const [form, setForm] = useState(EMPTY_FORM)
   const [editingId, setEditingId] = useState(null)
   const [showForm, setShowForm] = useState(false)
+  const [openFilesId, setOpenFilesId] = useState(null)
 
   const handleChange = (e) =>
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }))
@@ -165,6 +167,14 @@ export default function Subjects() {
 									<Button
 										variant="ghost" size="icon"
                     className="h-8 w-8 text-muted-foreground"
+                    aria-label={`Files for ${subject.name}`}
+                    onClick={() => setOpenFilesId(openFilesId === subject.id ? null : subject.id)}
+                  >
+                    <Paperclip size={14} />
+                  </Button>
+									<Button
+										variant="ghost" size="icon"
+                    className="h-8 w-8 text-muted-foreground"
                     aria-label={`Edit ${subject.name}`}
                     onClick={() => openEdit(subject)}
                   >
@@ -197,6 +207,11 @@ export default function Subjects() {
                   </AlertDialog>
 								</div>
 							</CardContent>
+              {openFilesId === subject.id && (
+                <div className="px-4 pb-3">
+                  <ResourcePanel entityType="subject" entityId={subject.id} />
+                </div>
+              )}
 						</Card>
 					))}
 				</div>

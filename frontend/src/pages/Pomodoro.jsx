@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Play, Pause, TimerReset } from 'lucide-react'
 import useSubjects from '../hooks/useSubjects'
+import api from '../lib/api'
 
 const DEFAULT_WORK = 25
 const DEFAULT_BREAK = 5
@@ -19,6 +20,26 @@ export default function Pomodoro() {
   const [sessions, setSessions] = useState(0)
   const [subjectId, setSubjectId] = useState('')
   const intervalRef = useRef(null)
+  const workMinsRef = useRef(DEFAULT_WORK)
+  const subjectIdRef = useRef('')
+  const subjectsRef = useRef([])
+
+  useEffect(() => { workMinsRef.current = workMins }, [workMins])
+  useEffect(() => { subjectIdRef.current = subjectId }, [subjectId])
+  useEffect(() => { subjectsRef.current = subjects }, [subjects])
+
+  useEffect(() => {
+    if (sessions === 0) return
+    const sid = subjectIdRef.current ? Number(subjectIdRef.current) : null
+    const sname = sid
+      ? (subjectsRef.current.find((s) => s.id === sid)?.name ?? null)
+      : null
+    api.post('/study-sessions', {
+      duration_minutes: workMinsRef.current,
+      subject_id: sid,
+      subject_name: sname,
+    }).catch(() => {})
+  }, [sessions])
 
   useEffect(() => {
     if (running) {
