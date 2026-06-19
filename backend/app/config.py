@@ -36,6 +36,7 @@ class Config:
 
     # AI / Anthropic
     ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
+    ANTHROPIC_MODEL = os.environ.get("ANTHROPIC_MODEL", "claude-haiku-4-5-20251001")
 
     # Text-to-speech
     TTS_PROVIDER = os.environ.get("TTS_PROVIDER", "kokoro")  # kokoro | elevenlabs

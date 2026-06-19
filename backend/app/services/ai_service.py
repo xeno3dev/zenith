@@ -9,20 +9,14 @@ import re
 import anthropic
 from flask import current_app
 
-MODEL = "claude-sonnet-4-5-20250929"
 
-
-def _get_client() -> anthropic.Anthropic:
+def _get_client():
     api_key = current_app.config.get("ANTHROPIC_API_KEY")
-    return anthropic.Anthropic(api_key=api_key)
+    model = current_app.config.get("ANTHROPIC_MODEL", "claude-haiku-4-5-20251001")
+    return anthropic.Anthropic(api_key=api_key), model
 
 
 def _extract_json(text: str):
-    """
-    Strip markdown code fences (```json ... ``` or ``` ... ```) if present,
-    then json.loads the remaining text. Raises ValueError with a clear
-    message if parsing fails.
-    """
     cleaned = text.strip()
     fence_match = re.match(r"^```(?:json)?\s*(.*?)\s*```$", cleaned, re.DOTALL)
     if fence_match:
@@ -36,10 +30,6 @@ def _extract_json(text: str):
 
 
 def generate_podcast_script(content: str, subject: str) -> list:
-    """
-    Generate a NotebookLM-style two-host study podcast script.
-    Returns a list of {"speaker": "Ari"|"Sol", "text": str} dicts.
-    """
     system_prompt = (
         "You are a professional podcast script writer for Zenith, an AI study "
         "app for students. You write engaging, natural-sounding two-host "
@@ -71,11 +61,11 @@ def generate_podcast_script(content: str, subject: str) -> list:
     )
 
     try:
-        client = _get_client()
+        client, model = _get_client()
         response = client.messages.create(
-            model=MODEL,
+            model=model,
             max_tokens=4096,
-            system=system_prompt,
+            system=[{"type": "text", "text": system_prompt, "cache_control": {"type": "ephemeral"}}],
             messages=[{"role": "user", "content": user_prompt}],
         )
         raw_text = "".join(
@@ -96,11 +86,6 @@ def generate_podcast_script(content: str, subject: str) -> list:
 
 
 def quiz_me(deck_id: int, user_id: str) -> dict:
-    """
-    Generate a 5-question quiz (mix of MCQ and short answer) that tests the
-    concepts in a deck's flashcards without simply copying card text.
-    Returns {"questions": [{"question", "type", "options", "answer"}, ...]}.
-    """
     from app.models.deck import Deck
     from app.models.flashcard import Flashcard
 
@@ -128,11 +113,11 @@ def quiz_me(deck_id: int, user_id: str) -> dict:
     user_prompt = f"Flashcards from deck '{deck.name}':\n{card_lines}\n\nGenerate the quiz now."
 
     try:
-        client = _get_client()
+        client, model = _get_client()
         response = client.messages.create(
-            model=MODEL,
+            model=model,
             max_tokens=2048,
-            system=system_prompt,
+            system=[{"type": "text", "text": system_prompt, "cache_control": {"type": "ephemeral"}}],
             messages=[{"role": "user", "content": user_prompt}],
         )
         raw_text = "".join(
@@ -153,10 +138,6 @@ def quiz_me(deck_id: int, user_id: str) -> dict:
 
 
 def explain_topic(topic: str, subject: str, level: str) -> str:
-    """
-    Ask Claude to explain `topic` within `subject` at the given `level`
-    (e.g. "high school", "intro college", "beginner"). Returns plain text.
-    """
     system_prompt = (
         "You are Zenith's friendly study assistant. Explain topics clearly, using "
         "simple language and concrete examples where it helps understanding. "
@@ -169,11 +150,11 @@ def explain_topic(topic: str, subject: str, level: str) -> str:
     )
 
     try:
-        client = _get_client()
+        client, model = _get_client()
         response = client.messages.create(
-            model=MODEL,
+            model=model,
             max_tokens=1500,
-            system=system_prompt,
+            system=[{"type": "text", "text": system_prompt, "cache_control": {"type": "ephemeral"}}],
             messages=[{"role": "user", "content": user_prompt}],
         )
         return "".join(block.text for block in response.content if hasattr(block, "text"))
@@ -182,12 +163,6 @@ def explain_topic(topic: str, subject: str, level: str) -> str:
 
 
 def chat(messages: list, context: str) -> str:
-    """
-    General study-assistant chat. `messages` is a list of
-    {"role": "user"|"assistant", "content": str} dicts (conversation history,
-    most recent last). `context` describes the current subject/page to help
-    ground the assistant's responses.
-    """
     system_prompt = (
         "You are Zenith, a friendly, encouraging AI study assistant. You help with "
         "homework questions, study strategies, exam prep, and general organization. "
@@ -197,11 +172,11 @@ def chat(messages: list, context: str) -> str:
     )
 
     try:
-        client = _get_client()
+        client, model = _get_client()
         response = client.messages.create(
-            model=MODEL,
+            model=model,
             max_tokens=1024,
-            system=system_prompt,
+            system=[{"type": "text", "text": system_prompt, "cache_control": {"type": "ephemeral"}}],
             messages=messages,
         )
         return "".join(block.text for block in response.content if hasattr(block, "text"))

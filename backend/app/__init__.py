@@ -29,7 +29,7 @@ def create_app(config_name="development"):
     from app.routes.flashcards import flashcards_bp
     from app.routes.grades import grades_bp
     from app.routes.timetable import timetable_bp
-    # from app.routes.ai import ai_bp  # Phase 3
+    from app.routes.ai import ai_bp  # Phase 3
     # from app.routes.podcasts import podcasts_bp  # Phase 4
 
     app.register_blueprint(auth_bp, url_prefix="/api/auth")
@@ -40,7 +40,7 @@ def create_app(config_name="development"):
     app.register_blueprint(flashcards_bp, url_prefix="/api")
     app.register_blueprint(grades_bp, url_prefix="/api")
     app.register_blueprint(timetable_bp, url_prefix="/api")
-    # app.register_blueprint(ai_bp, url_prefix="/api/ai")  # Phase 3
+    app.register_blueprint(ai_bp, url_prefix="/api/ai")  # Phase 3
     # app.register_blueprint(podcasts_bp, url_prefix="/api")  # Phase 4
 
     @app.errorhandler(400)
