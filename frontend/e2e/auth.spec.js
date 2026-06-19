@@ -10,7 +10,7 @@ test.describe('Registration', () => {
     await page.getByLabel('Email').fill(uniqueEmail())
     await page.getByLabel('Password').fill('ValidPass123!')
     await page.getByRole('button', { name: 'Sign Up' }).click()
-    await expect(page).toHaveURL('/')
+    await expect(page).toHaveURL('/dashboard')
   })
 
   test('duplicate email shows error and stays on register', async ({ page }) => {
@@ -22,7 +22,7 @@ test.describe('Registration', () => {
     await page.getByLabel('Email').fill(email)
     await page.getByLabel('Password').fill('ValidPass123!')
     await page.getByRole('button', { name: 'Sign Up' }).click()
-    await expect(page).toHaveURL('/')
+    await expect(page).toHaveURL('/dashboard')
 
     // Log out by clearing storage and trying to register again with same email
     await page.goto('/register')
@@ -43,8 +43,9 @@ test.describe('Login', () => {
     await expect(page).toHaveURL('/login')
   })
 
-  test('unauthenticated access to dashboard redirects to login', async ({ page }) => {
+  test('unauthenticated access to / shows landing page', async ({ page }) => {
     await page.goto('/')
-    await expect(page).toHaveURL('/login')
+    await expect(page).toHaveURL('/')
+    await expect(page.getByRole('heading', { name: /The study companion/i })).toBeVisible()
   })
 })
