@@ -8,7 +8,7 @@ class Exam(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(db.String(36), db.ForeignKey("users.id"), nullable=False)
-    subject_id = db.Column(db.Integer, db.ForeignKey("subjects.id"), nullable=False)
+    subject_id = db.Column(db.Integer, db.ForeignKey("subjects.id"), nullable=True)
     title = db.Column(db.String(255), nullable=False)
     exam_date = db.Column(db.DateTime, nullable=False)
     exam_type = db.Column(db.String(20), default="internal")  # internal|external|mock

@@ -47,8 +47,9 @@ export default function Register() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-text/70 mb-1">Full Name</label>
+            <label htmlFor="name" className="block text-sm font-medium text-text/70 mb-1">Full Name</label>
             <input
+              id="name"
               type="text"
               name="name"
               required
@@ -59,8 +60,9 @@ export default function Register() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-text/70 mb-1">Email</label>
+            <label htmlFor="email" className="block text-sm font-medium text-text/70 mb-1">Email</label>
             <input
+              id="email"
               type="email"
               name="email"
               required
@@ -71,8 +73,9 @@ export default function Register() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-text/70 mb-1">Password</label>
+            <label htmlFor="password" className="block text-sm font-medium text-text/70 mb-1">Password</label>
             <input
+              id="password"
               type="password"
               name="password"
               required
@@ -85,8 +88,9 @@ export default function Register() {
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-sm font-medium text-text/70 mb-1">School</label>
+              <label htmlFor="school" className="block text-sm font-medium text-text/70 mb-1">School</label>
               <input
+                id="school"
                 type="text"
                 name="school"
                 value={form.school}
@@ -96,8 +100,9 @@ export default function Register() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-text/70 mb-1">Grade Level</label>
+              <label htmlFor="grade_level" className="block text-sm font-medium text-text/70 mb-1">Grade Level</label>
               <input
+                id="grade_level"
                 type="text"
                 name="grade_level"
                 value={form.grade_level}

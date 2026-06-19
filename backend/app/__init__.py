@@ -43,6 +43,24 @@ def create_app(config_name="development"):
     app.register_blueprint(ai_bp, url_prefix="/api/ai")  # Phase 3
     # app.register_blueprint(podcasts_bp, url_prefix="/api")  # Phase 4
 
+    # JWT error handlers — always return 401 so the frontend interceptor
+    # clears the stored token and redirects to login automatically.
+    @jwt.invalid_token_loader
+    def invalid_token_callback(reason):
+        return jsonify({"error": "Invalid token", "reason": reason}), 401
+
+    @jwt.expired_token_loader
+    def expired_token_callback(header, payload):
+        return jsonify({"error": "Token has expired"}), 401
+
+    @jwt.unauthorized_loader
+    def missing_token_callback(reason):
+        return jsonify({"error": "Authorization required"}), 401
+
+    @jwt.revoked_token_loader
+    def revoked_token_callback(header, payload):
+        return jsonify({"error": "Token has been revoked"}), 401
+
     @app.errorhandler(400)
     def bad_request_error(error):
         return jsonify({"error": getattr(error, 'description', 'Bad request')}), 400

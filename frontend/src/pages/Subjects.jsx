@@ -165,13 +165,14 @@ export default function Subjects() {
 									<Button
 										variant="ghost" size="icon"
                     className="h-8 w-8 text-muted-foreground"
+                    aria-label={`Edit ${subject.name}`}
                     onClick={() => openEdit(subject)}
                   >
 										<Pencil size={14} />
 									</Button>
 									<AlertDialog>
                     <AlertDialogTrigger asChild>
-                      <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive">
+                      <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive" aria-label={`Delete ${subject.name}`}>
                         <Trash2 size={14} />
                       </Button>
                     </AlertDialogTrigger>

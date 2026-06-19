@@ -1,33 +1,32 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { ListTodo, GraduationCap, Layers, BarChart3 } from 'lucide-react'
+import { Link, useLocation } from 'react-router-dom'
+import { ListTodo, GraduationCap, BarChart3 } from 'lucide-react'
 import api from '../lib/api'
 import useAuthStore from '../store/authStore'
 import { formatDate, daysUntil } from '../lib/utils'
 
 export default function Dashboard() {
   const user = useAuthStore((s) => s.user)
+  const location = useLocation()
   const [assignments, setAssignments] = useState([])
   const [exams, setExams] = useState([])
-  const [dueCards, setDueCards] = useState([])
   const [gradeSummary, setGradeSummary] = useState([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    setLoading(true)
     Promise.all([
       api.get('/assignments').catch(() => ({ data: [] })),
       api.get('/exams', { params: { upcoming: true } }).catch(() => ({ data: [] })),
-      api.get('/cards/due').catch(() => ({ data: [] })),
       api.get('/grades/summary').catch(() => ({ data: [] })),
     ])
-      .then(([a, e, c, g]) => {
+      .then(([a, e, g]) => {
         setAssignments(a.data || [])
         setExams(e.data || [])
-        setDueCards(c.data || [])
         setGradeSummary(g.data || [])
       })
       .finally(() => setLoading(false))
-  }, [])
+  }, [location.key])
 
   const assignmentsDueSoon = assignments.filter((a) => {
     const d = daysUntil(a.due_date)
@@ -68,16 +67,10 @@ export default function Dashboard() {
       color: 'text-accent',
     },
     {
-      label: 'Flashcards due',
-      value: dueCards.length,
-      icon: Layers,
-      color: 'text-primary',
-    },
-    {
       label: 'Grade average',
       value: overallAverage !== null ? `${overallAverage}%` : '—',
       icon: BarChart3,
-      color: 'text-accent',
+      color: 'text-primary',
     },
   ]
 
@@ -90,7 +83,7 @@ export default function Dashboard() {
         <p className="text-text/60 mt-1">Here's what's happening with your studies.</p>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
         {stats.map(({ label, value, icon: Icon, color }) => (
           <div key={label} className="bg-surface rounded-xl p-4">
             <Icon className={color} size={22} />
@@ -157,12 +150,6 @@ export default function Dashboard() {
           className="px-4 py-2 rounded-lg bg-surface text-text text-sm font-medium hover:bg-white/10"
         >
           Add Exam
-        </Link>
-        <Link
-          to="/flashcards"
-          className="px-4 py-2 rounded-lg bg-accent text-background text-sm font-medium hover:opacity-90"
-        >
-          Study Now
         </Link>
       </div>
     </div>

@@ -16,6 +16,11 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 import Subjects from './pages/Subjects'
 import Pomodoro from './pages/Pomodoro'
+import ComingSoon from './pages/ComingSoon'
+
+const COMING_SOON = new Set(
+  (import.meta.env.VITE_COMING_SOON || '').split(',').map((s) => s.trim()).filter(Boolean)
+)
 
 function ProtectedLayout() {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated)
@@ -49,9 +54,9 @@ export default function App() {
         <Route path="/timetable" element={<Timetable />} />
         <Route path="/assignments" element={<Assignments />} />
         <Route path="/exams" element={<Exams />} />
-        <Route path="/flashcards" element={<Flashcards />} />
+        <Route path="/flashcards" element={COMING_SOON.has('flashcards') ? <ComingSoon /> : <Flashcards />} />
         <Route path="/grades" element={<Grades />} />
-        <Route path="/podcasts" element={<Podcasts />} />
+        <Route path="/podcasts" element={COMING_SOON.has('podcasts') ? <ComingSoon /> : <Podcasts />} />
         <Route path="/ai" element={<AIAssistant />} />
         <Route path="/subjects" element={<Subjects />} />
         <Route path="/pomodoro" element={<Pomodoro />} />

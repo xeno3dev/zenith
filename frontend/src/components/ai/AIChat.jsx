@@ -55,7 +55,7 @@ export default function AIChat() {
             <div
               className={cn(
                 'max-w-[75%] rounded-2xl px-4 py-2 text-sm whitespace-pre-wrap',
-                m.role === 'user' ? 'bg-primary text-white' : 'bg-white/10 text-text'
+                m.role === 'user' ? 'bg-primary text-background' : 'bg-white/10 text-text'
               )}
             >
               {m.content}

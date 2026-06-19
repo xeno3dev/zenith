@@ -5,7 +5,7 @@ export default function SubjectPicker({ subjects, onSelect, onClose }) {
   const navigate = useNavigate()
   
   return (
-    <div className="fixed inset-0 z-30 flex items-center justify-center bg-black/50 px-4">
+    <div className="fixed inset-0 z-30 flex items-center justify-center bg-black/70 backdrop-blur-sm px-4">
       <div className="bg-surface rounded-xl p-4 w-full max-w-sm max-h-[70vh] overflow-y-auto shadow-2xl">
         <div className="flex items-center justify-between mb-3">
           <h3 className="font-semibold text-sm">Choose a subject</h3>

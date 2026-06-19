@@ -33,7 +33,7 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-10 bg-background/80 backdrop-blur border-b border-white/5 px-4 md:px-6 py-4 flex items-center justify-between">
-      <h2 className="text-lg md:text-xl font-semibold">{title}</h2>
+      <p className="text-lg md:text-xl font-semibold">{title}</p>
 
       <div className="flex items-center gap-4">
         <span className="hidden sm:block text-sm text-text/60">
