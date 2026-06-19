@@ -159,6 +159,39 @@ export default function Landing() {
         </div>
       </section>
 
+      {/* Screenshots */}
+      <section className="pb-24 px-6">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-10">
+            <h2 className="text-3xl font-bold">See it in action</h2>
+            <p className="text-text/60 mt-2">Every screen, one dark theme. No clutter.</p>
+          </div>
+
+          {/* Hero screenshot */}
+          <div className="rounded-2xl overflow-hidden border border-white/10 shadow-2xl mb-4">
+            <img
+              src="/screenshots/dashboard.png"
+              alt="Zenith Dashboard"
+              className="w-full"
+            />
+          </div>
+
+          {/* Three smaller shots */}
+          <div className="grid md:grid-cols-3 gap-4">
+            {[
+              { src: '/screenshots/timetable.png', alt: 'Timetable — weekly or rotation mode' },
+              { src: '/screenshots/ai-assistant.png', alt: 'AI Assistant — powered by Claude' },
+              { src: '/screenshots/pomodoro.png', alt: 'Pomodoro — focus timer with subject tracking' },
+            ].map(({ src, alt }) => (
+              <div key={src} className="rounded-xl overflow-hidden border border-white/10 shadow-lg">
+                <img src={src} alt={alt} className="w-full" />
+                <p className="text-xs text-text/40 px-3 py-2 bg-surface">{alt}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Features */}
       <section className="pb-24 px-6">
         <div className="max-w-6xl mx-auto">
