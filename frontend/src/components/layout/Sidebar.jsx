@@ -11,6 +11,7 @@ import {
   BookOpen,
   Timer,
   Brain,
+  FolderOpen,
   LogOut,
 } from 'lucide-react'
 import useAuthStore from '../../store/authStore'
@@ -26,6 +27,7 @@ const links = [
   { to: '/pomodoro', label: 'Pomodoro', icon: Timer },
   { to: '/podcasts', label: 'Podcasts', icon: Mic },
   { to: '/ai', label: 'AI Assistant', icon: Sparkles },
+  { to: '/resources', label: 'Resources', icon: FolderOpen },
   { to: '/subjects', label: 'Subjects', icon: BookOpen },
   { to: '/quiz', label: 'Quiz', icon: Brain, badge: 'Soon' },
 ]

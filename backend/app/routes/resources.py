@@ -114,10 +114,11 @@ def upload_resource():
     entity_type = request.form.get('entity_type', '')
     entity_id_str = request.form.get('entity_id', '')
 
-    if entity_type not in ('subject', 'assignment', 'exam'):
-        return jsonify({'error': 'entity_type must be subject, assignment, or exam'}), 400
-    if not entity_id_str:
-        return jsonify({'error': 'entity_id is required'}), 400
+    if entity_type not in ('subject', 'assignment', 'exam', 'general'):
+        return jsonify({'error': 'entity_type must be subject, assignment, exam, or general'}), 400
+    # For general resources entity_id defaults to 0 (no specific entity)
+    if entity_type != 'general' and not entity_id_str:
+        return jsonify({'error': 'entity_id is required for non-general resources'}), 400
 
     content = file.read()
     if len(content) > MAX_FILE_SIZE:
@@ -140,7 +141,7 @@ def upload_resource():
     resource = Resource(
         user_id=user_id,
         entity_type=entity_type,
-        entity_id=int(entity_id_str),
+        entity_id=int(entity_id_str) if entity_id_str else 0,
         original_name=file.filename or saved_name,
         file_path=file_path,
         mime_type=mime_type,
@@ -174,6 +175,17 @@ def list_resources():
         q = q.filter_by(entity_id=int(entity_id))
 
     return jsonify([_resource_dict(r) for r in q.order_by(Resource.created_at.desc()).all()]), 200
+
+
+@resources_bp.route('/resources/<int:resource_id>', methods=['GET'])
+@jwt_required()
+def get_resource(resource_id):
+    """Return resource metadata + extracted text (for AI/Podcast use)."""
+    user_id = get_jwt_identity()
+    resource = Resource.query.filter_by(id=resource_id, user_id=user_id).first_or_404()
+    d = _resource_dict(resource)
+    d['extracted_text'] = resource.extracted_text  # included here but not in list
+    return jsonify(d), 200
 
 
 @resources_bp.route('/resources/<int:resource_id>/file', methods=['GET'])

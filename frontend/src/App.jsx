@@ -18,6 +18,7 @@ import Register from './pages/Register'
 import Subjects from './pages/Subjects'
 import Pomodoro from './pages/Pomodoro'
 import Quiz from './pages/Quiz'
+import Resources from './pages/Resources'
 import ComingSoon from './pages/ComingSoon'
 
 const COMING_SOON = new Set(
@@ -67,6 +68,7 @@ export default function App() {
         <Route path="/grades" element={<Grades />} />
         <Route path="/podcasts" element={COMING_SOON.has('podcasts') ? <ComingSoon /> : <Podcasts />} />
         <Route path="/ai" element={<AIAssistant />} />
+        <Route path="/resources" element={<Resources />} />
         <Route path="/subjects" element={<Subjects />} />
         <Route path="/pomodoro" element={<Pomodoro />} />
         <Route path="/quiz" element={<Quiz />} />

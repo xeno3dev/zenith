@@ -1,10 +1,12 @@
+# Load .env BEFORE any config modules are imported, so class-level
+# os.environ.get() calls in Config pick up the correct values.
 from dotenv import load_dotenv
+load_dotenv(override=True)  # override shell env so .env always wins
+
 from flask import Flask, jsonify
 
 from app.config import config_by_name
 from app.extensions import db, migrate, jwt, cors
-
-load_dotenv()
 
 
 def create_app(config_name="development"):

@@ -223,6 +223,16 @@ _TOOLS = [
         },
     },
     {
+        "name": "list_all_resources",
+        "description": (
+            "List ALL files the student has uploaded across all subjects, assignments, "
+            "exams, and their general library. Call this when they ask what files they "
+            "have, want to find a document by name, or before reading a resource without "
+            "knowing the entity it's attached to."
+        ),
+        "input_schema": {"type": "object", "properties": {}},
+    },
+    {
         "name": "generate_flashcards_from_resource",
         "description": (
             "Generate flashcard question/answer pairs from the text of an uploaded "
@@ -260,8 +270,10 @@ _SYSTEM_PROMPT = (
     "- 'how many cards are due?' → call get_due_flashcards\n"
     "- 'add this to my deck' → call list_decks, then add_flashcard\n"
     "- 'how long have I studied?' → call get_study_time\n"
-    "- 'read my notes for maths' → call list_resources, then read_resource\n"
-    "- 'make flashcards from my PDF' → call list_resources, read_resource, then generate_flashcards_from_resource\n\n"
+    "- 'read my notes for maths' → call list_resources or list_all_resources, then read_resource\n"
+    "- 'make flashcards from my PDF' → call list_all_resources, read_resource, then generate_flashcards_from_resource\n"
+    "- 'what files do I have?' → call list_all_resources\n"
+    "If the student sends an image in the conversation, describe and analyse it for them.\n\n"
     "When you create something for the student, say clearly what you did.\n"
     "Keep replies warm but concise. No markdown — plain conversational text only."
 )
@@ -420,6 +432,15 @@ def _execute_tool(name: str, inputs: dict, user_id: str):
             ),
         }
 
+    if name == "list_all_resources":
+        resources = (
+            Resource.query
+            .filter_by(user_id=user_id)
+            .order_by(Resource.created_at.desc())
+            .all()
+        )
+        return [_resource_summary(r) for r in resources]
+
     if name == "list_resources":
         entity_type = inputs.get("entity_type")
         entity_id = inputs.get("entity_id")
@@ -503,7 +524,8 @@ def chat_with_tools(messages: list, user_id: str) -> dict:
     for m in messages:
         role = m.get("role")
         content = m.get("content", "")
-        if role in ("user", "assistant") and isinstance(content, str):
+        # Accept both plain-text strings and multimodal content lists (with images)
+        if role in ("user", "assistant") and isinstance(content, (str, list)):
             claude_messages.append({"role": role, "content": content})
 
     actions = []

@@ -14,6 +14,8 @@ from app.models.podcast import Podcast
 from app.models.timetable import Timetable
 from app.models.study_session import StudySession
 from app.models.resource import Resource
+from app.models.chat_session import ChatSession
+from app.models.chat_message import ChatMessage
 
 __all__ = [
     "User",
@@ -27,4 +29,6 @@ __all__ = [
     "Timetable",
     "StudySession",
     "Resource",
+    "ChatSession",
+    "ChatMessage",
 ]
