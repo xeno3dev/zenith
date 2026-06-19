@@ -2,9 +2,11 @@ import PeriodBlock from './PeriodBlock'
 
 function getColumns(config) {
   if (config?.mode === 'rotate') {
-    return config.rotate_labels?.length
-      ? config.rotate_labels
-      : Array.from({ length: config.rotate_count || 6 }, (_, i) => `Day ${i + 1}`)
+    // Always "Day 1", "Day 2", … regardless of any stored labels
+    return Array.from(
+      { length: config.rotate_count || 6 },
+      (_, i) => `Day ${i + 1}`
+    )
   }
   return config?.days || ['Mon', 'Tue', 'Wed', 'Thu', 'Fri']
 }

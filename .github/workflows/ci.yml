@@ -58,6 +58,13 @@ jobs:
         run: npx playwright install --with-deps chromium
         working-directory: frontend
 
+      # Run migrations so the SQLite DB has all tables before the server starts
+      - name: Initialize database
+        run: flask db upgrade
+        working-directory: backend
+        env:
+          FLASK_APP: app:create_app
+
       # --- Tests ---
       - name: Run Playwright tests
         run: npx playwright test

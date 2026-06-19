@@ -66,17 +66,7 @@ export default function Timetable() {
 
   const setRotateCount = (n) => {
     const count = Math.max(2, Math.min(14, Number(n)))
-    const labels = Array.from(
-      { length: count },
-      (_, i) => config.rotate_labels[i] ?? `Day ${i + 1}`
-    )
-    updateConfig({ rotate_count: count, rotate_labels: labels })
-  }
-
-  const updateRotateLabel = (idx, value) => {
-    const labels = [...config.rotate_labels]
-    labels[idx] = value
-    updateConfig({ rotate_labels: labels })
+    updateConfig({ rotate_count: count })
   }
 
   const toggleDay = (day) => {
@@ -143,32 +133,17 @@ export default function Timetable() {
               </div>
             </div>
           ) : (
-            <div className="space-y-3">
-              <div className="flex items-center gap-3">
-                <p className="text-xs text-text/50 shrink-0">Number of rotation days</p>
-                <input
-                  type="number"
-                  min={2}
-                  max={14}
-                  value={config.rotate_count}
-                  onChange={(e) => setRotateCount(e.target.value)}
-                  className="w-16 px-2 py-1 rounded-lg bg-background border border-white/10 text-sm text-center focus:outline-none focus:ring-2 focus:ring-primary"
-                />
-              </div>
-              <div>
-                <p className="text-xs text-text/50 mb-2">Day labels</p>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                  {config.rotate_labels.map((label, i) => (
-                    <input
-                      key={i}
-                      type="text"
-                      value={label}
-                      onChange={(e) => updateRotateLabel(i, e.target.value)}
-                      className="px-2 py-1 rounded-lg bg-background border border-white/10 text-xs focus:outline-none focus:ring-2 focus:ring-primary"
-                    />
-                  ))}
-                </div>
-              </div>
+            <div className="flex items-center gap-3">
+              <p className="text-xs text-text/50 shrink-0">Number of rotation days</p>
+              <input
+                type="number"
+                min={2}
+                max={14}
+                value={config.rotate_count}
+                onChange={(e) => setRotateCount(e.target.value)}
+                className="w-16 px-2 py-1 rounded-lg bg-background border border-white/10 text-sm text-center focus:outline-none focus:ring-2 focus:ring-primary"
+              />
+              <p className="text-xs text-text/40">Columns labelled Day 1 – Day {config.rotate_count}</p>
             </div>
           )}
 
