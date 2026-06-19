@@ -9,6 +9,7 @@ import {
   Mic,
   Sparkles,
   BookOpen,
+  Timer,
   LogOut,
 } from 'lucide-react'
 import useAuthStore from '../../store/authStore'
@@ -21,6 +22,7 @@ const links = [
   { to: '/exams', label: 'Exams', icon: GraduationCap },
   { to: '/flashcards', label: 'Flashcards', icon: Layers },
   { to: '/grades', label: 'Grades', icon: BarChart3 },
+  { to: '/pomodoro', label: 'Pomodoro', icon: Timer },
   { to: '/podcasts', label: 'Podcasts', icon: Mic },
   { to: '/ai', label: 'AI Assistant', icon: Sparkles },
   { to: '/subjects', label: 'Subjects', icon: BookOpen },
