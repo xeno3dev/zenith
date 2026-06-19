@@ -86,7 +86,7 @@ export default function FlashcardImport({ deckId, onImported }) {
           <button
             onClick={handleConfirm}
             disabled={importing}
-            className="px-4 py-2 rounded-lg bg-primary text-white text-sm font-medium hover:opacity-90 disabled:opacity-50"
+            className="px-4 py-2 rounded-lg bg-primary text-background text-sm font-medium hover:opacity-90 disabled:opacity-50"
           >
             {importing ? 'Importing...' : `Import ${rows.length} cards`}
           </button>

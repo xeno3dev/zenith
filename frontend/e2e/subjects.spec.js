@@ -36,9 +36,7 @@ test.describe('Subjects', () => {
     await expect(card).toBeVisible()
 
     // Click the edit (pencil) button on that card
-    const editBtn = page.locator('[data-testid="edit-subject"]').first()
-    // Fallback: click pencil icon button near the subject name
-    await page.locator('button').filter({ hasText: '' }).nth(1).click()
+    await page.getByRole('button', { name: /edit/i }).first().click()
 
     await page.getByLabel('Name').fill('Advanced Mathematics')
     await page.getByRole('button', { name: 'Save Changes' }).click()

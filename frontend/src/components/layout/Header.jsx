@@ -12,7 +12,8 @@ const titles = {
   '/grades': 'Grades',
   '/podcasts': 'Podcasts',
   '/ai': 'AI Assistant',
-  '/subjects': 'Subjects'
+  '/subjects': 'Subjects',
+  '/pomodoro': 'Pomodoro',
 }
 
 function getInitials(name) {
@@ -41,7 +42,7 @@ export default function Header() {
         <button className="text-text/60 hover:text-primary transition-colors">
           <Bell size={20} />
         </button>
-        <div className="w-8 h-8 rounded-full bg-accent flex items-center justify-center text-xs font-semibold text-white">
+        <div className="w-8 h-8 rounded-full bg-accent flex items-center justify-center text-xs font-semibold text-background">
           {getInitials(user?.name)}
         </div>
       </div>

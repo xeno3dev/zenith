@@ -160,7 +160,7 @@ export default function Dashboard() {
         </Link>
         <Link
           to="/flashcards"
-          className="px-4 py-2 rounded-lg bg-accent text-white text-sm font-medium hover:opacity-90"
+          className="px-4 py-2 rounded-lg bg-accent text-background text-sm font-medium hover:opacity-90"
         >
           Study Now
         </Link>
