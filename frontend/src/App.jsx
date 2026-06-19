@@ -4,6 +4,7 @@ import Sidebar from './components/layout/Sidebar'
 import Header from './components/layout/Header'
 import MobileNav from './components/layout/MobileNav'
 
+import Landing from './pages/Landing'
 import Dashboard from './pages/Dashboard'
 import Timetable from './pages/Timetable'
 import Assignments from './pages/Assignments'
@@ -16,18 +17,24 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 import Subjects from './pages/Subjects'
 import Pomodoro from './pages/Pomodoro'
-import ComingSoon from './pages/ComingSoon'
 import Quiz from './pages/Quiz'
+import ComingSoon from './pages/ComingSoon'
 
 const COMING_SOON = new Set(
   (import.meta.env.VITE_COMING_SOON || '').split(',').map((s) => s.trim()).filter(Boolean)
 )
 
+/** Public root — Landing for guests, redirect to /dashboard for auth'd users */
+function SmartRoot() {
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated)
+  return isAuthenticated ? <Navigate to="/dashboard" replace /> : <Landing />
+}
+
 function ProtectedLayout() {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated)
 
   if (!isAuthenticated) {
-    return <Navigate to="/login" replace />
+    return <Navigate to="/" replace />
   }
 
   return (
@@ -47,11 +54,12 @@ function ProtectedLayout() {
 export default function App() {
   return (
     <Routes>
+      <Route path="/" element={<SmartRoot />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
 
       <Route element={<ProtectedLayout />}>
-        <Route path="/" element={<Dashboard />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/timetable" element={<Timetable />} />
         <Route path="/assignments" element={<Assignments />} />
         <Route path="/exams" element={<Exams />} />

@@ -3,7 +3,7 @@ import { LayoutDashboard, ListTodo, Layers, Mic, Sparkles } from 'lucide-react'
 import { cn } from '../../lib/utils'
 
 const links = [
-  { to: '/', label: 'Home', icon: LayoutDashboard, end: true },
+  { to: '/dashboard', label: 'Home', icon: LayoutDashboard, end: true },
   { to: '/assignments', label: 'Tasks', icon: ListTodo },
   { to: '/flashcards', label: 'Cards', icon: Layers },
   { to: '/podcasts', label: 'Pods', icon: Mic },

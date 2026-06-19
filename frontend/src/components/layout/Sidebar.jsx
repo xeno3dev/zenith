@@ -17,7 +17,7 @@ import useAuthStore from '../../store/authStore'
 import { cn } from '../../lib/utils'
 
 const links = [
-  { to: '/', label: 'Dashboard', icon: LayoutDashboard },
+  { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { to: '/timetable', label: 'Timetable', icon: CalendarDays },
   { to: '/assignments', label: 'Assignments', icon: ListTodo },
   { to: '/exams', label: 'Exams', icon: GraduationCap },
@@ -62,7 +62,7 @@ export default function Sidebar() {
           <NavLink
             key={to}
             to={to}
-            end={to === '/'}
+            end={to === '/dashboard'}
             className={({ isActive }) =>
               cn(
                 'flex items-center gap-3 px-6 py-3 text-sm font-medium border-l-4 transition-colors',
