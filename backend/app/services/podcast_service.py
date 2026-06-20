@@ -69,7 +69,7 @@ def generate_podcast(podcast_id, app):
                              podcast_id, i + 1, len(combined))
 
             # 3. Export final audio
-            storage_path = app.config.get("AUDIO_STORAGE_PATH", "audio_storage")
+            storage_path = os.path.abspath(app.config.get("AUDIO_STORAGE_PATH", "audio_storage"))
             os.makedirs(storage_path, exist_ok=True)
             output_path = os.path.join(storage_path, f"{podcast_id}.mp3")
             combined.export(output_path, format="mp3")

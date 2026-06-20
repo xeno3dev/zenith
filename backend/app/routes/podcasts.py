@@ -75,10 +75,20 @@ def get_podcast_audio(podcast_id):
     if podcast is None:
         return jsonify({"error": "Podcast not found"}), 404
 
-    if podcast.status != "ready" or not podcast.audio_path or not os.path.exists(podcast.audio_path):
+    if podcast.status != "ready" or not podcast.audio_path:
         return jsonify({"error": "Podcast audio is not ready yet"}), 404
 
-    return send_file(podcast.audio_path, mimetype="audio/mpeg")
+    # Resolve relative paths — Flask's send_file resolves them against
+    # app.root_path (backend/app/), not the backend root where audio lives.
+    audio_path = podcast.audio_path
+    if not os.path.isabs(audio_path):
+        backend_root = os.path.dirname(current_app.root_path)
+        audio_path = os.path.join(backend_root, audio_path)
+
+    if not os.path.exists(audio_path):
+        return jsonify({"error": "Podcast audio file not found"}), 404
+
+    return send_file(audio_path, mimetype="audio/mpeg")
 
 
 @podcasts_bp.route("/podcasts/<int:podcast_id>", methods=["DELETE"])

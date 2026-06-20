@@ -7,7 +7,7 @@ export default function SubjectPicker({ subjects, onSelect, onClose }) {
 
   return createPortal(
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm px-4">
-      <div className="bg-surface rounded-xl p-4 w-full max-w-sm max-h-[70vh] overflow-y-auto shadow-2xl">
+      <div className="bg-[#110E22] border border-white/10 rounded-xl p-4 w-full max-w-sm max-h-[70vh] overflow-y-auto shadow-2xl">
         <div className="flex items-center justify-between mb-3">
           <h3 className="font-semibold text-sm">Choose a subject</h3>
           <button onClick={onClose} className="text-text/50 hover:text-text">
