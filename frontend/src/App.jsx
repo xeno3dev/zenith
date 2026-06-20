@@ -1,5 +1,7 @@
+import { useEffect } from 'react'
 import { Routes, Route, Navigate, Outlet } from 'react-router-dom'
 import useAuthStore from './store/authStore'
+import api from './lib/api'
 import Sidebar from './components/layout/Sidebar'
 import Header from './components/layout/Header'
 import MobileNav from './components/layout/MobileNav'
@@ -53,6 +55,16 @@ function ProtectedLayout() {
 }
 
 export default function App() {
+  const { isAuthenticated, user, setUser } = useAuthStore()
+
+  // On first load, if we have a token but lost the user object (e.g. old session
+  // before localStorage persistence was added), re-fetch it from the server.
+  useEffect(() => {
+    if (isAuthenticated && !user) {
+      api.get('/auth/me').then((res) => setUser(res.data)).catch(() => {})
+    }
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <Routes>
       <Route path="/" element={<SmartRoot />} />

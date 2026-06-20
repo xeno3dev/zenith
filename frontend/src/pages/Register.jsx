@@ -25,7 +25,7 @@ export default function Register() {
     setLoading(true)
     try {
       const res = await api.post('/auth/register', form)
-      login(res.data.user, res.data.access_token)
+      login(res.data.user, res.data.access_token, res.data.refresh_token)
       toast.success('Account created! Welcome to Zenith.')
       navigate('/')
     } catch (err) {

@@ -16,7 +16,7 @@ export default function Login() {
     setLoading(true)
     try {
       const res = await api.post('/auth/login', { email, password })
-      login(res.data.user, res.data.access_token)
+      login(res.data.user, res.data.access_token, res.data.refresh_token)
       toast.success('Welcome back!')
       navigate('/')
     } catch (err) {
