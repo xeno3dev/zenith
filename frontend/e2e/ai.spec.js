@@ -19,7 +19,7 @@ test.describe('AI Assistant', () => {
     await expect(page.getByRole('heading', { name: 'AI Study Assistant' })).toBeVisible()
     await expect(page.getByRole('button', { name: 'Start a new chat' })).toBeVisible()
     // Sidebar always shows the New chat button
-    await expect(page.getByRole('button', { name: 'New chat' })).toBeVisible()
+    await expect(page.getByRole('button', { name: 'New chat', exact: true })).toBeVisible()
   })
 
   test('creates a session and shows chat input', async ({ page }) => {
