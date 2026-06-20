@@ -103,10 +103,10 @@ Confirmed: both HTTP header and query-string token methods deliver HTTP 200 with
 
 ### The Timetable Dialog
 
-The "Choose a subject" picker in the timetable had a transparent background — the overlay was there, the content was there, but the dialog card was see-through against whatever was behind it.
+The "Choose a subject" picker in the timetable had a transparent background - there was the overlay there, there was the component contents there, yet the dialog card was see-through of what it rested on.
 
-The component was using `bg-surface`, a custom color defined in `tailwind.config.js`. Tailwind v4 (which this project uses via `@import "tailwindcss"`) doesn't resolve custom colors from the JS config the same way v3 did, so `bg-surface` was generating nothing. Swapped it out for `bg-[#110E22]` (the same value the theme defines for surface/card) and added `border border-white/10` for a clean visible edge.
+The component happened to rely on `bg-surface`, a custom colour specified by our `tailwind.config.js`. Since Tailwind v4 does not process custom colors from the JS config like v3 when you use `@import "tailwindcss"`, `bg-surface` didn't work, it produced nothing. Replaced it with `bg-[#110E22]`, that is our custom theme's card/surface color, with an additional border to delineate it — `border border-white/10`.
 
 ## What's Next
 
-Podcast playback works end to end. Next step is improving the player UI — seeking, waveform synchronization with transcript and handling the podcasts that are generating while opening the page.
+The playback experience for podcasts now seems end to end. The next item up the backlog is to upgrade the UX on player – this involves seeking and correlating waveform to podcast script and handle new podcasts that are generated while the page is open.
