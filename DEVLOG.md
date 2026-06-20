@@ -1,106 +1,112 @@
-# Devlog: Zenith
+# Devlog: Zenith | The Beginnings
 
 ## June 18
 
-Today I've been working on Zenith, a study companion app combining timetables, assignments, exams, grades, flashcards, and an AI assistant. Today was supposed to be an easy one. It wasn't (curse you my luck).
+Today I was working on Zenith, study companion app including timetables, assignments, exams, grades, flashcards, and an AI assistant. Today was going to be an easy one. It wasn't (curse you my luck).
 
 ### The Exam Bug
 
-First off, the exam creation form would submit, display no error, and then just... not save anything. Assignments were fine. Grades were fine. Just exams. Stared at `Exams.jsx` for a while thinking something should be blatantly obvious about the frontend but all forms in the app look identical in code.
+First off, the form for creating an exam would submit without errors, but would not save anything in the database. Assignment forms worked, grades forms worked, only exams didn't work. Stared at `Exams.jsx` for a while expecting something blatantly obvious about frontend but all forms in the app are exactly alike in code.
 
-As it turns out, it was the backend this whole time. In `backend/app/routes/exams.py`, the validation check was:
+Turned out it was the backend the whole time. In `backend/app/routes/exams.py`, the validation looks like:
 
 ```python
 if not data.get("title") or not data.get("subject_id") or not data.get("exam_date"):
 ```
 
-`subject_id` is an optional field. The frontend sends `null` when there's no selected subject, which is totally fine. But the backend was treating it as mandatory and silently rejecting any exam created without a subject with a 400. Remove one condition from that check and everything starts working.
+`subject_id` is an optional field. Frontend sends `null` for it when the user doesn't select a subject and that's totally fine. However, the backend was treating it as required and silently returning 400 on any attempts to create an exam without a subject. Removed one condition and everything started working.
 
-And the "dashboard not updating" issue I had logged turned out to not even be a bug at all. The dashboard reloads data each time it mounts, so once exams were actually saving, the counter automatically started showing the right number. I was chasing a ghost.
+Oh, the "dashboard counter is not updating" issue that I logged? Well, the counter is reloading every time the Dashboard component is mounted and once the forms started saving the number showed the right count.
 
 ### The Contrast Audit
 
-Did a contrast audit because the app color scheme was recently changed to dark navy and golden yellow, and I had missed half the `text-white` on yellow button cases. I had been using `sed` to target `bg-primary text-white` but completely missed `bg-accent text-white` — the exact same yellow color, different class name. Five more pages plus the header avatar, all fixed.
+Conducted a contrast audit because the app color scheme was changed to dark navy and golden yellow recently and I had missed half the `text-white` on yellow button cases. Used `sed` to replace `bg-primary text-white` in many places and forgot about the other class `bg-accent text-white` which was the same yellow color. Five more pages and the header avatar, all fixed.
 
 ### New Features
 
-The rest of the session was new features:
+And now for the new features:
 
-- **Pomodoro timer** — circular SVG progress ring, work/break mode toggling, configurable durations, session counter
-- **Timetable backend persistence** — moved timetable data from `localStorage` to a proper backend database so it persists across devices and browser clears
-- **Flask-Migrate initialized** — tried running `flask db migrate` and got "Path doesn't exist: migrations" because `flask db init` had never been run on this project. Classic. Once sorted, the migration came up clean
-- **AI features enabled** — switched the blueprint on, swapped the hardcoded Sonnet model for Haiku via `ANTHROPIC_MODEL` in `.env`, and added prompt caching to all four service functions so repeated system prompts hit the cache instead of billing full tokens every time
+- **Pomodoro timer** — circular SVG progress ring, work/break mode toggling, durations config, session counter
+- **Timetable backend persistence** — moved timetable data from `localStorage` to database
+- **Flask-Migrate initialized** — `flask db init` -> migrations folder -> `flask db migrate` -> empty migration. No issues detected
+- **AI features enabled** — flipped the blueprint on, replaced Sonnet model with Haiku via `ANTHROPIC_MODEL` in .env, enabled prompt caching for all four services
 
 ### Testing
 
-After getting the API key in place, ran a full Playwright test suite end to end. Caught a few real bugs in the process:
+Once the API key is in place, ran a full Playwright test suite to check if it all works end to end. Did catch a couple of bugs in the process:
 
-- Login and Register forms had no `htmlFor`/`id` on their labels, so `getByLabel()` could never find them. Fixed accessibility and unblocked automated testing at the same time
-- The AI chat user bubble was using `text-white` on the yellow primary background. Same contrast issue as before, different file (`AIChat.jsx`)
-- The Header was rendering the page title as an `h2`, which created duplicate heading violations when combined with each page's own `h1`. Demoted it to a `p` tag with the same styles
-- Edit and Delete buttons on subject cards were icon-only with no accessible name, so Playwright (and screen readers) had no way to target them. Added `aria-label` to both
+- Login/Register forms have no `htmlFor`/`id` for their labels, hence, `getByLabel()` couldn't find them. Fixed the accessibility and unblocked automated testing
+- The bubble for an AI chat user has `text-white` class used on the yellow primary background. The same contrast problem in `AIChat.jsx` file
+- The Header renders the page title as `<h2>`, hence, creating duplicates of `<h1>` headings. Fixed by downgrading the Header title to `<p>`
+- Subject edit and delete buttons use icons only, no accessible name. Hence, Playwright (as well as screen readers) cannot interact with them. Fixed by adding `aria-label` to both
 
-All 12 tests pass. AI chat, explain, and quiz all confirmed working live against the API.
+All 12 tests passed successfully. Checked AI chat, explain and quiz features against the API.
 
 ## June 19
 
 ### New Features
 
-Before the bugs, a bunch of new things shipped:
+Bunch of new features before bugs:
 
-- **AI sessions** — chats are now persistent and named, with a sidebar for switching between them
-- **Image paste/upload** — you can paste a screenshot or drag in a file directly into the AI chat
-- **Resources page** — attach files to subjects, preview PDFs and images in a side panel
-- **Podcast ContentUploader** — the generator now has a proper library picker so you can pull in saved resources instead of pasting text every time
-- **Timetable day labels** — simplified; no more verbose day names cluttering the grid
+- **AI sessions** — now chats are persistent and named, with a sidebar to switch between them
+- **Image paste/upload** — you can paste or drag an image into the AI chat
+- **Resources page** — attach files to your subjects, preview PDFs/images in the side panel
+- **Podcast ContentUploader** — generator now uses a proper library picker
+- **Timetable day labels** — now simpler, no extra verbose names
 
 ### The Podcast Pipeline
 
-The podcast feature generates a two-host AI conversation from study material and synthesizes it to audio using Kokoro TTS. In theory. In practice, every single podcast was ending up in `status=failed`.
+The podcast feature generates an AI conversation between two hosts from study material and synthesizes it to audio with Kokoro TTS. In theory. In practice, each and every podcast was stuck in `status=failed`.
 
-The first lead was the Kokoro endpoint. The service was calling `POST /tts` with `{"text": ..., "voice": ..., "speed": ...}` — a path that simply doesn't exist. Fetched the OpenAPI spec from the running Kokoro container and found the actual endpoint: `POST /v1/audio/speech` with `{"model": "kokoro", "input": ..., "voice": ..., "response_format": "mp3", "stream": false}`. Classic case of writing an integration against assumed docs instead of real ones.
+First lead was the Kokoro endpoint. The service called `POST /tts` with `{"text": ..., "voice": ..., "speed": ...}` body. This endpoint simply doesn't exist. Retrieved the OpenAPI spec for the running Kokoro container and found out that the actual endpoint was `POST /v1/audio/speech` with `{"model": "kokoro", "input": ..., "voice": ..., "response_format": "mp3", "stream": false}` body.
 
-After fixing that and adding logging throughout the pipeline, ran a live end-to-end test. Podcast id=7 went `pending → generating → ready` in about 135 seconds, producing a 7.6-minute episode. Pipeline confirmed working.
+After fixing that and adding some logging in the pipeline, ran an end-to-end test. Podcast #7 went `pending → generating → ready` in 135 seconds. The result was 7.6 minute episode. Confirmed that the pipeline works.
 
 ### The CI Failures
 
-Two separate CI breaks had stacked up:
+Two CI breaks have stacked up.
 
-**`anthropic` version** — `requirements.txt` pinned `anthropic==0.39.0`, but the test environment has `httpx>=0.28` which removed the `proxies` kwarg from its client constructor. The anthropic SDK passes that kwarg on init. Result: `TypeError: Client.__init__() got an unexpected keyword argument 'proxies'` on every test run. Bumped to `0.111.0` to match what's actually installed locally.
+**`anthropic` version** — `requirements.txt` pins `anthropic==0.39.0` and the test environment has `httpx>=0.28` installed which removed the `proxies` kwarg from its client constructor. As a result, `TypeError: Client.__init__() got an unexpected keyword argument 'proxies'` on every test run. Updated `anthropic` version to `0.111.0` to match the actual local version.
 
-**Playwright strict mode** — A test was calling `getByRole('button', { name: 'New chat' })` which matched *two* elements: the sidebar "New chat" button and the welcome screen "Start a new chat" button (partial name match). Added `exact: true` to pin it to the sidebar button only.
+**Playwright strict mode** — one of the tests was calling `getByRole('button', { name: 'New chat' })` and it matched two elements: the sidebar "New chat" button and the welcome screen "Start a new chat" button (matched with a partial name). Solved by adding `exact: true` to make it match only the sidebar button.
 
-Both fixed, CI green.
+Both solved, CI green.
 
 ### The Session Bugs
 
-Two related bugs that had been lurking:
+Two session-related bugs I've missed.
 
-**"User shows as Student"** — after a page reload, the display name would fall back to "Student" even though the user was still logged in. The auth store was initializing `user: null` and never persisting the user object to localStorage, so every reload wiped it. Fixed by saving the user as JSON in `localStorage` (`zenith_user`) and loading it back in a `loadUser()` helper on store init.
+**"User shows as Student"** — after a reload, the display name fell back to "Student" despite the user was logged in. The problem was that the auth store initializes `user: null` and does not persist the user object in `localStorage`. Fixed by saving the user object as JSON in `localStorage` (`zenith_user`) and reading it back in `loadUser()` function used in store initialization.
 
-**"Requests stop working after an hour"** — after about 60 minutes, all API calls would start 401-ing with no recovery path except a manual logout and login. Two causes: `Login.jsx` and `Register.jsx` were both calling `login(user, access_token)` and silently dropping the `refresh_token` the API returned, so it was never stored. And the 401 interceptor in `api.js` had no refresh logic at all — it just cleared the session and redirected to `/login`.
+**"Requests stop working after an hour"** — after about 60 minutes of work, all API calls would start 401-ing and there would be no way to get back except for a manual logout/login. Two causes: `Login.jsx` and `Register.jsx` were calling `login(user, access_token)` and silently ignoring the `refresh_token` provided by the API, hence, it was never saved. And the 401 interceptor in `api.js` had no refresh logic at all, just clears the session and redirects to `/login`.
 
-Fixed by storing the refresh token in localStorage, passing it through the `login()` call, and implementing a proper refresh queue in the interceptor: on 401, attempt `POST /auth/refresh` with the stored refresh token, update the access token, and retry the original request. Concurrent 401s during the refresh are queued and drained once the new token comes back.
+Fixed by saving `refresh_token` in `localStorage` along with the user, passing it to `login()` and implementing the refresh queue in the interceptor: on 401, try `POST /auth/refresh` with the stored refresh token, update the access token, retry the original request. Concurrent 401s during the refresh will be queued and executed once the access token is updated.
 
 ### The Audio Playback Bug
 
-The podcasts were generating fine. Status was `ready`. The transcript and waveform rendered. The play button did nothing — no audio, no error, just silence.
+Podcasts generated perfectly. Status — `ready`. Transcript and waveform render fine. The play button does nothing — no audio, no error, just silence.
 
-Hitting the audio endpoint directly returned a 500. The traceback:
+Hitting the endpoint directly returns 500. The trace:
 
 ```
 FileNotFoundError: No such file or directory:
 '.../backend/app/./audio_storage/8.mp3'
 ```
 
-Flask's `send_file`, when given a relative path, resolves it against `app.root_path` — which is the directory containing the Flask package's `__init__.py`. That's `backend/app/`, not `backend/`. So `./audio_storage/8.mp3` was being looked up inside `backend/app/audio_storage/` which doesn't exist.
+The `send_file()` method from Flask, when a relative path is passed to it, resolves it relative to `app.root_path` which is the directory with the package `__init__.py`. Which is `backend/app/`, not `backend/`. Therefore, `./audio_storage/8.mp3` resolves to `backend/app/audio_storage/8.mp3` which doesn't exist.
 
-The audio was correctly stored at `backend/audio_storage/8.mp3`. It just couldn't be found from there.
+The actual audio is saved at `backend/audio_storage/8.mp3`. It just couldn't be found from there.
 
-Two-part fix: the route now checks if the stored path is relative and, if so, resolves it against `os.path.dirname(current_app.root_path)` (the actual backend root) before calling `send_file`. And the service now wraps `AUDIO_STORAGE_PATH` in `os.path.abspath()` so future podcasts store an absolute path to begin with.
+Two-part fix: the route now checks if the stored path is relative and, if it is, resolves it relative to `os.path.dirname(current_app.root_path)` before sending the file. And the service now wraps `AUDIO_STORAGE_PATH` in `os.path.abspath()` so future podcasts are going to store an absolute path.
 
-Verified: both auth header and query-string token delivery now return HTTP 200 with audio bytes.
+Confirmed: both HTTP header and query-string token methods deliver HTTP 200 with audio bytes.
+
+### The Timetable Dialog
+
+The "Choose a subject" picker in the timetable had a transparent background — the overlay was there, the content was there, but the dialog card was see-through against whatever was behind it.
+
+The component was using `bg-surface`, a custom color defined in `tailwind.config.js`. Tailwind v4 (which this project uses via `@import "tailwindcss"`) doesn't resolve custom colors from the JS config the same way v3 did, so `bg-surface` was generating nothing. Swapped it out for `bg-[#110E22]` (the same value the theme defines for surface/card) and added `border border-white/10` for a clean visible edge.
 
 ## What's Next
 
-Podcast playback is fully working end to end. Next up is polishing the player experience — seeking, progress sync with the transcript, and handling edge cases like podcasts that are still generating when the page loads.
+Podcast playback works end to end. Next step is improving the player UI — seeking, waveform synchronization with transcript and handling the podcasts that are generating while opening the page.
