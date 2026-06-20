@@ -9,11 +9,18 @@ Voice mapping:
 For ElevenLabs, voice IDs are read from environment variables
 ELEVENLABS_VOICE_ARI / ELEVENLABS_VOICE_SOL (with fallback placeholder IDs);
 set these in your .env to real ElevenLabs voice IDs for production use.
+
+Kokoro API: uses the OpenAI-compatible /v1/audio/speech endpoint.
+  POST /v1/audio/speech  {"model": "kokoro", "input": ..., "voice": ...,
+                          "response_format": "mp3", "speed": 1.0, "stream": false}
 """
+import logging
 import os
 
 import requests
 from flask import current_app
+
+logger = logging.getLogger(__name__)
 
 KOKORO_VOICE_MAP = {
     "Ari": "am_adam",
@@ -29,19 +36,37 @@ ELEVENLABS_VOICE_MAP = {
 
 def _synthesize_kokoro(text: str, speaker: str) -> bytes:
     """
-    POST to a self-hosted Kokoro-FastAPI style server at {KOKORO_URL}/tts.
-    Expected request body: {"text": ..., "voice": ..., "speed": 1.0}
-    Expected response: raw audio bytes (mp3) in the response body.
+    POST to a self-hosted Kokoro-FastAPI server using the OpenAI-compatible
+    /v1/audio/speech endpoint.
+    Body: {"model": "kokoro", "input": <text>, "voice": <voice>,
+           "response_format": "mp3", "speed": 1.0, "stream": false}
+    Response: raw MP3 bytes.
     """
     kokoro_url = current_app.config.get("KOKORO_URL", "http://localhost:8880")
     voice = KOKORO_VOICE_MAP.get(speaker, "am_adam")
+    endpoint = f"{kokoro_url}/v1/audio/speech"
+
+    logger.debug("TTS kokoro: speaker=%s voice=%s text_len=%d url=%s",
+                 speaker, voice, len(text), endpoint)
 
     response = requests.post(
-        f"{kokoro_url}/tts",
-        json={"text": text, "voice": voice, "speed": 1.0},
+        endpoint,
+        json={
+            "model": "kokoro",
+            "input": text,
+            "voice": voice,
+            "response_format": "mp3",
+            "speed": 1.0,
+            "stream": False,
+        },
         timeout=120,
     )
+
+    if not response.ok:
+        logger.error("Kokoro TTS error %s: %s", response.status_code, response.text[:500])
     response.raise_for_status()
+
+    logger.debug("TTS kokoro: received %d bytes", len(response.content))
     return response.content
 
 
