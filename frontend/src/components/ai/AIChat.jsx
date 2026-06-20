@@ -96,7 +96,6 @@ export default function AIChat({ sessionId, initialMessages = [], onSessionCreat
   const [input, setInput] = useState('')
   const [pendingImages, setPendingImages] = useState([]) // [{base64, mediaType, preview}]
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(null)
   const bottomRef = useRef(null)
   const fileInputRef = useRef(null)
   const activeSessionId = useRef(sessionId)
@@ -107,7 +106,6 @@ export default function AIChat({ sessionId, initialMessages = [], onSessionCreat
     activeSessionId.current = sessionId
     setPendingImages([])
     setInput('')
-    setError(null)
   }, [sessionId]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
@@ -188,7 +186,6 @@ export default function AIChat({ sessionId, initialMessages = [], onSessionCreat
     setInput('')
     setPendingImages([])
     setLoading(true)
-    setError(null)
 
     try {
       let res
@@ -222,7 +219,11 @@ export default function AIChat({ sessionId, initialMessages = [], onSessionCreat
       }
     } catch (err) {
       const msg = err?.response?.data?.error || 'Something went wrong — please try again.'
-      setError(msg)
+      // Show the error as an assistant message so it appears inline in the chat
+      setMessages((prev) => [
+        ...prev,
+        { role: 'assistant', content: msg, actions: [] },
+      ])
     } finally {
       setLoading(false)
     }
@@ -265,10 +266,6 @@ export default function AIChat({ sessionId, initialMessages = [], onSessionCreat
               <span className="w-2 h-2 rounded-full bg-text/50 animate-bounce" />
             </div>
           </div>
-        )}
-
-        {error && (
-          <p className="text-xs text-accent text-center py-1">{error}</p>
         )}
 
         <div ref={bottomRef} />

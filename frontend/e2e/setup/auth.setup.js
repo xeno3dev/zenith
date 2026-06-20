@@ -21,7 +21,7 @@ setup('authenticate test user', async ({ page }) => {
   await page.getByLabel('Password').fill(TEST_USER.password)
   await page.getByRole('button', { name: 'Log In' }).click()
 
-  const loggedIn = await page.waitForURL('/', { timeout: 3000 }).then(() => true).catch(() => false)
+  const loggedIn = await page.waitForURL('/dashboard', { timeout: 3000 }).then(() => true).catch(() => false)
 
   if (!loggedIn) {
     // Register fresh
@@ -30,7 +30,7 @@ setup('authenticate test user', async ({ page }) => {
     await page.getByLabel('Email').fill(TEST_USER.email)
     await page.getByLabel('Password').fill(TEST_USER.password)
     await page.getByRole('button', { name: 'Sign Up' }).click()
-    await expect(page).toHaveURL('/')
+    await expect(page).toHaveURL('/dashboard')
   }
 
   await page.context().storageState({ path: AUTH_FILE })
